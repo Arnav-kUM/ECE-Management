@@ -5,7 +5,6 @@ import Modal from "react-modal";
 
 const AdminReturnRequest = ({ user }) => {
   const [requests, setRequests] = useState([]);
-  const [selectedStatus, setSelectedStatus] = useState("returning");
   const [loading, setLoading] = useState(true);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [remark, setRemark] = useState('NA');
@@ -21,16 +20,17 @@ const AdminReturnRequest = ({ user }) => {
     "Requested On",
     "Due Date",
     "Retuned On",
+    "Action",
   ];
 
   useEffect(() => {
     setLoading(true); fetchRequests();
-  }, [selectedStatus]);
+  }, []);
 
   const fetchRequests = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/transaction/requests/${selectedStatus}/${user.lab}`
+        `http://localhost:3000/api/transaction/requests/returning/${user.lab}`
       );
       const data = await response.json();
 
@@ -153,9 +153,6 @@ const AdminReturnRequest = ({ user }) => {
             {columnName}
           </th>
         ))}
-        {selectedStatus === "returning" ? (
-          <th className="border p-2 text-center">Action</th>
-        ) : <th className="border p-2 text-center">Remark</th>}
       </tr>
     );
   };
@@ -198,46 +195,31 @@ const AdminReturnRequest = ({ user }) => {
         <td className="border p-2 text-center">{request?.studentComment}</td>
         <td className="border p-2 text-center">{formattedStartDate}</td>
         <td className="border p-2 text-center">{formattedreturndate}</td>
-        <td className="border p-2 text-center">{formattedReturnedOn}</td>
-          {selectedStatus === "returning" ? (
-            <td className="border p-2">{
-              <div className="flex justify-between">
-                <button
-                  className="bg-green-500 text-white px-2 py-1 rounded-md items-center"
-                  onClick={() => acceptAlert(request._id)}
-                >
-                  Approve
-                </button>
+        <td className="border p-2 text-center">{formattedReturnedOn}</td>          
+        <td className="border p-2">{
+          <div className="flex justify-between">
+            <button
+              className="bg-green-500 text-white px-2 py-1 rounded-md items-center"
+              onClick={() => acceptAlert(request._id)}
+            >
+              Approve
+            </button>
 
-                <button
-                  className="bg-red-500 text-white px-2 py-1 rounded-md items-center"
-                  onClick={() => declineAlert(request._id)}
-                >
-                  Decline
-                </button>
-              </div>
-              }
-            </td>
-          ) : (
-            <td className="border p-2 text-center">{request?.adminComments}</td>
-          )}
-        
+            <button
+              className="bg-red-500 text-white px-2 py-1 rounded-md items-center"
+              onClick={() => declineAlert(request._id)}
+            >
+              Decline
+            </button>
+          </div>
+          }
+        </td>
       </tr>
     );
   };
 
   return (
-    <div>
-      <label htmlFor="status">Select Status:</label>
-      <select
-        id="status"
-        className="ml-2 p-2 border border-gray-300 rounded"
-        value={selectedStatus}
-        onChange={(e) => setSelectedStatus(e.target.value)}
-      >
-        <option value="returning">Returning</option>
-        <option value="completed">Completed</option>
-      </select>
+    <div className="mt-4">
       {loading ? (
         <div className="flex justify-center">
           <ClipLoader
