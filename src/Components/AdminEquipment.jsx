@@ -6,6 +6,8 @@ import { PiCheckBold } from 'react-icons/pi';
 import Swal from 'sweetalert2';
 import Modal from "react-modal";
 import ClipLoader from "react-spinners/ClipLoader";
+import * as XLSX from 'xlsx';
+
 const EquipmentTable = ({user}) => {
   const [equipmentData, setEquipmentData] = useState([]);
   const [editingRow, setEditingRow] = useState(-1);
@@ -14,7 +16,7 @@ const EquipmentTable = ({user}) => {
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [loading, setLoading] = useState(true);
-
+  const token = localStorage.getItem("token")
 
   useEffect(() => {
     setLoading(true); fetchEquipmentData();
@@ -171,8 +173,9 @@ const EquipmentTable = ({user}) => {
         Swal.fire('Error!', 'Lab could be either lab1, lab2 or lab3.', 'error');
         return;
       }
-      
-    const token = localStorage.getItem("token")
+
+    const equipmentsData = [
+      { name: name, lab: lab, description: description, link: link, quantity: quantity, allotmentDays: allotmentDays, type: type }];
 
       // Send a POST request to the backend to add new equipment
       const response = await fetch('http://localhost:3000/api/equipment/equipments', {
@@ -181,7 +184,7 @@ const EquipmentTable = ({user}) => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ name, lab, description, link, quantity, allotmentDays, type }),
+        body: JSON.stringify(equipmentsData), // Sending array of JSON objects
       });
   
       const data = await response.json();
@@ -339,6 +342,51 @@ const EquipmentTable = ({user}) => {
     setShowFilterModal(true);
   };
 
+
+  const uploadEquipmetXLSX = (event) => {
+
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = async (e) => {
+        const data = e.target.result;
+        const workbook = XLSX.read(data, { type: 'binary' });
+        const sheetName = workbook.SheetNames[0]; // Assuming the data is in the first sheet.
+        const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
+        if (sheetData.length === 0) {
+          console.error('No data found in the XLSX file.');
+          return;
+        }
+
+        const headerRow = Object.keys(sheetData[0]);
+
+        const courses = sheetData.map((rowData) => {
+          const courses = {};
+          headerRow.forEach((field) => {
+            courses[field] = rowData[field];
+          });
+          return courses;
+        });
+        
+        const response = await fetch('http://localhost:3000/api/equipment/equipments', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(courses), // Sending array of JSON objects
+        });
+        console.log(response)
+      };
+      reader.onerror = (error) => {
+        console.error('Error reading XLSX:', error);
+      };
+      reader.readAsBinaryString(file);
+    }
+  }
+
   return (
     // <div className=''>
       <div className=''>
@@ -362,13 +410,24 @@ const EquipmentTable = ({user}) => {
             Filter
           </button>
         </div>
-        <div className='flex justify-end mr-6'>
+        <div className='flex justify-end mr-2'>
           <button
             className='rounded-full bg-[#3dafaa] text-white border-2 border-[#3dafaa] py-1 px-3 mt-2 mb-1 mr-1 hover:bg-white hover:text-[#3dafaa]'
             onClick={handleAddEquipment}
           >
             Add Equipment
           </button>
+         
+            {/* Upload XLSX button */}
+            <label className="rounded-full bg-[#3dafaa] text-white border-2 border-[#3dafaa] py-1 px-3 mt-2 mb-1 mr-1 hover:bg-white hover:text-[#3dafaa]">
+              Add vis XLSX
+              <input
+                type="file"
+                accept=".xlsx"
+                className="hidden"
+                onChange={uploadEquipmetXLSX}
+              />
+            </label>
         </div>
       </div>
       <Modal

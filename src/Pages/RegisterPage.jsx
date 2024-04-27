@@ -18,6 +18,8 @@ const Register = () => {
         graduationYear: ''
     });
 
+    const rollNumberRegex = /^(phd|mt|\d+)/i;
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -36,6 +38,10 @@ const Register = () => {
             }
             if(formData.fullName === '' || formData.password === '' || formData.rollNumber === '' || formData.graduationType === '' || formData.branch === '' || formData.contactNumber === '' || formData.graduationYear === ''){
                 alert("Please in fill all fields");
+                return;
+            }
+            if (! rollNumberRegex.test(formData.rollNumber) || formData.rollNumber.length < 7 || formData.rollNumber.length > 9){
+                alert("Invalid Roll Number");
                 return;
             }
             setLoading(true);
@@ -123,7 +129,7 @@ const Register = () => {
                             Password
                         </label>
                         <input
-                            type='password'
+                            type='text'
                             id='password'
                             name='password'
                             value={formData.password}
@@ -137,7 +143,7 @@ const Register = () => {
                             Roll Number
                         </label>
                         <input
-                            type='number'
+                            type='text'
                             id='rollNumber'
                             name='rollNumber'
                             value={formData.rollNumber}
@@ -166,7 +172,7 @@ const Register = () => {
                     </div>
                     <div className='mb-4'>
                         <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor='branch'>
-                            Branch
+                            Department
                         </label>
                         <select
                             id='branch'
@@ -178,13 +184,11 @@ const Register = () => {
                         >
                             <option value=''>Select Branch</option>
                             <option value='cse'>CSE</option>
-                            <option value='csb'>CSB</option>
-                            <option value='csam'>CSAM</option>
-                            <option value='csd'>CSD</option>
-                            <option value='csai'>CSAI</option>
+                            <option value='cb'>CB</option>
+                            <option value='maths'>Maths</option>
+                            <option value='hcd'>HCD</option>
                             <option value='ece'>ECE</option>
-                            <option value='csss'>CSSS</option>
-                            <option value='vlsi'>VLSI</option>
+                            <option value='ssh'>SSH</option>
                         </select>
                     </div>
                     <div className='mb-4'>
@@ -192,7 +196,7 @@ const Register = () => {
                             Graduation Year
                         </label>
                         <input
-                            type='number'
+                            type='text'
                             id='graduationYear'
                             name='graduationYear'
                             value={formData.graduationYear}
@@ -206,7 +210,7 @@ const Register = () => {
                             Contact Number
                         </label>
                         <input
-                            type='number'
+                            type='text'
                             id='contactNumber'
                             name='contactNumber'
                             value={formData.contactNumber}

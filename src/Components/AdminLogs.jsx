@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
+import * as XLSX from "xlsx";
 
 function AdminLogs({ user }) {
 
@@ -21,15 +22,13 @@ function AdminLogs({ user }) {
   useEffect(() => {
     setLoading(true); fetchRequests();
   },[]);
-
-
+console.log(requests);
   const fetchRequests = async () => {
     try {
       const response = await fetch(
         `http://localhost:3000/api/transaction/requests/completed/${user.lab}`
       );
       const data = await response.json();
-
       const requestsArray = data.Rrequests || [];
       const studentsArray = data.students || [];
       const equipmentsArray = data.equipments || [];
@@ -106,10 +105,50 @@ function AdminLogs({ user }) {
         </tr>
     );
   };
+  
+  const handleDownload = () => {
 
+    let currentDate = new Date();
+
+    // Get current date components
+    let year = currentDate.getFullYear();
+    let month = currentDate.getMonth() + 1; // Month is zero-based, so we add 1
+    let day = currentDate.getDate();
+    
+    let data = []
+    for (const i of requests){
+      let row = {}
+      row['Equipment Name'] = i['equipment']['name']
+      row['Student Email ID'] = i['student']['email']
+      row['Conatact'] = i['student']['contactNumber']
+      row['Conatact'] = i['student']['contactNumber']
+      row['Quantity'] = i['request']['quantity']
+      row['Additional Info'] = i['student']['studentComment']
+      row['Request On'] = i['request']['startDate']
+      row['Due Date'] = i['request']['returnDate']
+      row['Returned On'] = i['request']['returnedOn']
+      row['Remark'] = i['request']['adminComments']
+      data.push(row)
+    }
+
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, `${user.lab}`);
+    XLSX.writeFile(
+      wb,
+      `${user.lab}_${day}/${month}/${year}.xlsx`
+    );
+  }
 
   return (
-    <div className="mt-4">
+    <div className="">
+      <div className="flex justify-end my-1">  
+        <button className="bg-[#3dafaa] text-white px-4 py-2 rounded-full cursor-pointer font-bold"
+        onClick={handleDownload}
+        >
+          Download
+        </button>
+      </div>
       {loading ? (
         <div className="flex justify-center">
           <ClipLoader

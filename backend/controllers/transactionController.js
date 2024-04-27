@@ -170,7 +170,7 @@ const createRequest = async (req, res) => {
     
     await request.save();
     console.log("sending email to", student.email)
-    studentRequestMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, quantity, "borrow");
+    // studentRequestMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, quantity, "borrow");
     res.status(201).json(request);
   } catch (error) {
     res
@@ -218,7 +218,7 @@ const deleteRequest = async (req, res) => {
 
 // Accept a borrow request (Admin)
 const acceptRequest = async (req, res) => {
-  console.log("req")
+  
   try {
     const { transactionId } = req.params;
     const {remark} = req.body;
@@ -226,7 +226,8 @@ const acceptRequest = async (req, res) => {
     const student = await Student.findById(request.student);
     const equipment = await Equipment.findById(request.equipment);
     const lab = request.lab;
-    const admin = await Admin.findOne({lab});
+    const admin = await Admin.findOne({ lab: lab});
+
     if (!request) {
       return res.status(400).json({ error: "Request not found" });
     }
@@ -237,20 +238,20 @@ const acceptRequest = async (req, res) => {
     }
 
     if(request.status === "requested"){
+      // Add transactionId to student's equippedItemTransaction array
       request.status = "accepted";
-
       equipment.quantity -= request.quantity;
 
-      await Promise.all([request.save(), equipment.save()]);
-      requestApprovedAndDeclinedMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, request.quantity, "borrow", "Approval");
+      await Promise.all([request.save(), equipment.save(), student.save()]);
+      // requestApprovedAndDeclinedMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, request.quantity, "borrow", "Approval");
     }
     else{
       request.status = "completed";
       equipment.quantity += request.quantity;
       request.adminComments = remark;
 
-      await Promise.all([request.save(), equipment.save()]);
-      requestApprovedAndDeclinedMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, request.quantity, "return", "Approval");
+      await Promise.all([request.save(), equipment.save(), student.save()]);
+      // requestApprovedAndDeclinedMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, request.quantity, "return", "Approval");
     }
     res.status(200).json(request);
   } catch (error) {
@@ -269,7 +270,7 @@ const declineRequest = async (req, res) => {
     const student = await Student.findById(request.student);
     const equipment = await Equipment.findById(request.equipment);
     const lab = request.lab;
-    const admin = await Admin.findOne({lab:lab});
+    const admin = await Admin.findOne({lab: lab});
     if (!request) {
       return res.status(400).json({ error: "Request not found" });
     }
@@ -282,12 +283,12 @@ const declineRequest = async (req, res) => {
     if(request.status === 'requested'){
       request.status = "declined";
       await request.save();
-      requestApprovedAndDeclinedMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, request.quantity, "borrow", "Decline");
+      // requestApprovedAndDeclinedMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, request.quantity, "borrow", "Decline");
     }
     else{
       request.status = "accepted";
       await request.save();
-      requestApprovedAndDeclinedMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, request.quantity, "return", "Decline");
+      // requestApprovedAndDeclinedMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, request.quantity, "return", "Decline");
       
     }
 
@@ -302,18 +303,22 @@ const declineRequest = async (req, res) => {
 // Fetch all requests
 const getAllRequests = async (req, res) => {
   
-  const { status,lab } = req.params;
+  const { status,lab, studentID } = req.params;
+  
   const baseQuery = {};
   if (status) {
     const statusArray = status.split(","); // Split the comma-separated string into an array
     baseQuery.status = { $in: statusArray }; // Use $in operator to match any of the provided statuses
   }
+  if (studentID){
+    baseQuery.student = studentID;
+  }
   if (lab != "All"){
     baseQuery.lab = lab;
   }
+  console.log(baseQuery)
   try {
     const Rrequests = await Transaction.find(baseQuery);
-
 
     // Assuming that each request has a reference to student and equipment by _id
     const studentIds = Rrequests.map((request) => request.student);
@@ -327,7 +332,6 @@ const getAllRequests = async (req, res) => {
         students.push(student);
       }
     }
-    
     // Fetch all equipments based on the array of equipment IDs
     const equipments = [];
     for (const equipmentId of equipmentIds) {
@@ -336,8 +340,8 @@ const getAllRequests = async (req, res) => {
         equipments.push(equipment);
       }
     }
-
-    res.status(200).json({ Rrequests, students, equipments });
+    console.log(Rrequests);
+    res.status(200).json({ Rrequests: Rrequests, students: students, equipments: equipments });
   } catch (error) {
     console.error("Error fetching requests:", error);
     res
@@ -351,7 +355,7 @@ const getRequestByStudentIDs = async (req, res) => {
   try {
     const studentId  = req.student;
     const { status } = req.query;
-
+    console.log("hello",studentId)
     // Create a base query with the student ID
     const baseQuery = { student: studentId };
 
@@ -374,7 +378,7 @@ const getRequestByStudentIDs = async (req, res) => {
         equipments.push(equipment);
       }
     }
-
+    console.log(equipments)
     res.status(200).json({ requests, equipments });
   } catch (error) {
     console.error("Error fetching requests:", error);
@@ -442,7 +446,7 @@ const createReturnRequest = async (req, res) => {
     await transaction.save(); // Use await directly on the save method
 
     res.status(200).json(transaction);
-    studentRequestMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, transaction.quantity, "return");
+    // studentRequestMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, transaction.quantity, "return");
   } catch (error) {
     console.error("Error returning equipment:", error);
     res

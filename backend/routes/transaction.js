@@ -20,6 +20,7 @@ router.post("/return",transactionAuthMiddleware, createReturnRequest);
 router.put("/accept/:transactionId", acceptRequest);
 router.put("/decline/:transactionId", declineRequest);
 router.put("/transactions/confirm/:transactionId", confirmTransaction);
+router.get("/requests/:status/:lab/:studentID", getAllRequests);
 router.get("/requests/:status/:lab", getAllRequests);
 
 

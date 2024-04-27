@@ -35,7 +35,7 @@ const studentSchema = new mongoose.Schema({
   },
   branch: {
     type: String,
-    enum: ['cse', 'csb', 'csam', 'csd', 'ece', 'csss', 'vlsi','csai'],
+    enum: ['cse', 'cb', 'hcd', 'ece', 'maths', 'ssh'],
     required: true,
   },
   graduationYear: {
@@ -46,6 +46,15 @@ const studentSchema = new mongoose.Schema({
     type: Boolean,
     require: true,
     default: false
+  },
+  duesClearedOn: {
+    type: Date,
+    default: null
+  },
+  duesClearedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Admin',
+    default: null
   }
 });
 

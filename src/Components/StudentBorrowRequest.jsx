@@ -146,13 +146,27 @@ const StudentBorrowRequest = ({ user }) => {
         <td className={`border p-2 ${textColor}`}>{request.status}</td>
         <td className="border p-2">
           <div className="flex items-center justify-center">
-            <button
-              className="bg-red-500 text-white px-2 py-1 rounded-md items-center"
-              onClick={() => deleteRequest(request._id, user.id)}
-            >
-              Cancel
-            </button>
+            {request.status === 'requested' ?
+              (
+                <button
+                  className="bg-blue-500 text-white px-2 py-1 rounded-md items-center"
+                  onClick={() => deleteRequest(request._id, user.id)}
+                >
+                  Cancel
+                </button>
+              )
+              :
+              (
+                <button
+                  className="bg-gray-500 text-white px-2 py-1 rounded-md items-center"
+                  disabled = {true}
+                >
+                  Cancel
+                </button>
+              )
+            }
           </div>
+            
         </td>
       </tr>
     );

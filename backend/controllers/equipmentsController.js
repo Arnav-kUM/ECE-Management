@@ -3,17 +3,29 @@ const Equipment = require('../models/Equipment'); // Assuming you have the Equip
 // Add Equipment
 const addEquipments = async (req, res) => {
   try {
-    const { name, lab, description, link, quantity, allotmentDays, type } = req.body;
-    if (lab !== req.lab) {
-      return res.status(401).json({ message: 'Unauthorized - Lab mismatch' });
+    const equipmentsData = req.body; // Assuming req.body is an array of JSON objects
+    console.log(req.body);
+    // Iterate over each equipment data
+    const createdEquipments = [];
+    for (const equipmentData of equipmentsData) {
+      const { name, lab, description, link, quantity, allotmentDays, type } = equipmentData;
+
+      if (lab !== req.lab) {
+        return res.status(401).json({ message: 'Unauthorized - Lab mismatch' });
+      }
+
+      const newEquipment = new Equipment({ name, lab, description, link, quantity, allotmentDays, type });
+      await newEquipment.save();
+      createdEquipments.push(newEquipment);
     }
-    const newEquipment = new Equipment({ name, lab, description, link, quantity, allotmentDays, type });
-    await newEquipment.save();
-    res.status(201).json({ message: 'Equipment created successfully', equipment: newEquipment });
+
+    res.status(201).json({ message: 'Equipment(s) created successfully', equipments: createdEquipments });
   } catch (error) {
+    console.log(error)
     res.status(500).json({ error: 'An error occurred while adding the equipment' });
   }
 };
+
 
 // Retrieve Equipment by Lab
 const getEquipmentsByLab = async (req, res) => {
