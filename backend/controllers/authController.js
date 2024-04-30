@@ -4,6 +4,7 @@ const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
 const nodemailer = require( 'nodemailer' );
 const otpGenerator = require( 'otp-generator' );
+const { findById } = require('../models/Transaction');
 const otpStorage = new Map();
 const secretKey = 'your-secret-key'; // Replace with your actual secret key
 
@@ -248,14 +249,22 @@ const forgotPassword = async(req, res) => {
 
 const disableStudent = async (req, res) => {
   try {
+    console.log('disable: ',req.body)
     const { studentID } = req.body;
+    const lab = req.lab;
     const student = await Student.findById(studentID);
+    const admin = await Admin.findOne({lab: lab});
 
+    if (!admin) {
+      return res.status(400).json({ success: false, message: 'Unauthorized user' });
+    }
     if (!student) {
       return res.status(400).json({ success: false, message: 'No user registered with this Student ID' });
     }
 
     student.clearDues = true;
+    student.duesClearedBy = admin;
+    student.duesClearedOn = new Date();
     await student.save();
 
     res.status(200).json({ success: true, message: 'Dues cleared successfully' });
@@ -265,5 +274,30 @@ const disableStudent = async (req, res) => {
   }
 };
 
+const getDisablesStudentLogs = async (req, res) => {
+  try{
+    const lab = req.lab;
 
-module.exports = { studentLogin, adminLogin, addStudent, addAdmin,sendOtp, verifyOtp,students, forgotPassword, disableStudent};
+    const admin = await Admin.findOne({lab: lab});
+
+    if (!admin) {
+      return res.status(400).json({ success: false, message: 'Unauthorized user' });
+    }
+    const disabledStudents = await Student.find({clearDues: true});
+    
+    duesLogs = []
+    for (const i of disabledStudents){
+      data = {};
+      data.student = i;
+      const clearedBy = await Admin.findById(i.duesClearedBy);
+      data.admin = clearedBy.username;
+      duesLogs.push(data);
+    }
+    res.status(200).json({ success: true, data: duesLogs });
+  }
+  catch (error) {
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+}
+
+module.exports = { studentLogin, adminLogin, addStudent, addAdmin,sendOtp, verifyOtp,students, forgotPassword, disableStudent, getDisablesStudentLogs};

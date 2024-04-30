@@ -16,7 +16,8 @@ const EquipmentTable = ({user}) => {
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [loading, setLoading] = useState(true);
-  const token = localStorage.getItem("token")
+  const token = localStorage.getItem("token");
+  const [showFullDescription, setShowFullDescription] = useState(false);
 
   useEffect(() => {
     setLoading(true); fetchEquipmentData();
@@ -211,7 +212,7 @@ const EquipmentTable = ({user}) => {
   const truncateLink = (link) => {
     try {
       const url = new URL(link);
-      const truncatedLink = `${url.protocol}//${url.hostname}${url.pathname.split('/').slice(0, 2).join('/')}`;
+      const truncatedLink = `${url.protocol}//${url.hostname}${url.pathname.split('/').slice(0, 1).join('/')}`;
   
       return truncatedLink;
     } catch (error) {
@@ -229,102 +230,127 @@ const EquipmentTable = ({user}) => {
       updatedEquipmentData[index][field] = e.target.value;
       setEquipmentData(updatedEquipmentData);
     };
-
+  
     const isTypeSelected = selectedTypes.length === 0 || selectedTypes.includes(equipment.type);
 
+    const toggleShowFullDescription = () => {
+      const updatedEquipmentData = [...equipmentData];
+      updatedEquipmentData[index].showFullDescription = !updatedEquipmentData[index].showFullDescription;
+      setEquipmentData(updatedEquipmentData);
+    };
+
+    const truncatedDescription = equipment.description.split(' ').slice(0, 1).join(' ');
+  
     if (
       equipment.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      isTypeSelected // if it is inclueded in that list
+      isTypeSelected // if it is included in that list
     ) {
       const serialNumber = index + 1;
-    return (
-      <tr className={`text-center ${isEditing ? editingRowClass : ''}`} key={equipment._id}>
-        <td className='border p-2'>{serialNumber}</td>
-        <td className='border p-2'>
-          {isEditing ? (
-            <input value={equipment.name} onChange={(e) => handleFieldChange(e, 'name')} />
-          ) : (
-            equipment.name
-          )}
-        </td>
-        <td className='border p-2'>
-          {isEditing ? (
-            <input value={equipment.lab} onChange={(e) => handleFieldChange(e, 'lab')} />
-          ) : (
-            equipment.lab
-          )}
-        </td>
-        <td className='border p-2'>
-          {isEditing ? (
-            <input value={equipment.description} onChange={(e) => handleFieldChange(e, 'description')} />
-          ) : (
-            equipment.description
-          )}
-        </td>
-        <td className='border p-2'>
-          {isEditing ? (
-            <input value={equipment.link} onChange={(e) => handleFieldChange(e, 'link')} />
-          ) : (
-            <a href={equipment.link} target="_blank" rel="noopener noreferrer" className='text-blue-500'>
-              {truncateLink(equipment.link)}
-            </a>
-          )}
-        </td>
-        <td className='border p-2'>
-          {isEditing ? (
-            <input value={equipment.quantity} onChange={(e) => handleFieldChange(e, 'quantity')} />
-          ) : (
-            equipment.quantity
-          )}
-        </td>
-        <td className='border p-2'>
-          {isEditing ? (
-            <input value={equipment.type} onChange={(e) => handleFieldChange(e, 'type')} />
-          ) : (
-            equipment.type
-          )}
-        </td>
-        <td className='border p-2'>
-          <div className='flex justify-center'>
+  
+      return (
+        <tr className={`text-center ${isEditing ? editingRowClass : ''}`} key={equipment._id}>
+          <td className='border p-2'>{serialNumber}</td>
+          <td className='border p-2'>
             {isEditing ? (
-              <>
-                <button
-                  className='bg-green-500 text-white px-2 py-1 rounded-md flex items-center mr-1'
-                  onClick={() => handleSave(index)}
-                >
-                  <PiCheckBold /> Save
-                </button>
-                <button
-                  className='bg-red-500 text-white px-2 py-1 rounded-md flex items-center'
-                  onClick={handleCancel}
-                >
-                  <RxCross2 /> Cancel
-                </button>
-              </>
+              <input value={equipment.name} onChange={(e) => handleFieldChange(e, 'name')} />
             ) : (
-              <>
-                <button
-                  className='bg-blue-500 text-white px-2 py-1 rounded-md flex items-center mr-1'
-                  onClick={() => handleEdit(index)}
-                >
-                  <BiSolidEditAlt /> Edit
-                </button>
-                <button
-                  className='bg-red-500 text-white px-2 py-1 rounded-md flex items-center'
-                  onClick={() => deleteAlert(index)}
-                >
-                  <RiDeleteBin6Line /> Delete
-                </button>
-              </>
+              equipment.name
             )}
-          </div>
-        </td>
-      </tr>
-    ); }
+          </td>
+          <td className='border p-2'>
+            {isEditing ? (
+              <input value={equipment.lab} onChange={(e) => handleFieldChange(e, 'lab')} />
+            ) : (
+              equipment.lab
+            )}
+          </td>
+          <td className='border p-2'>
+            {isEditing ? (
+              <input value={equipment.description} onChange={(e) => handleFieldChange(e, 'description')} />
+            ) : (
+              <div>
+                {equipment.showFullDescription ? (
+                  <>
+                  equipment.description
+                  <button onClick={toggleShowFullDescription} className='text-blue-500'>
+                      ...Show Less
+                  </button>
+                  </>
+                ) : (
+                  <>
+                    {truncatedDescription}{' '}
+                    <button onClick={toggleShowFullDescription} className='text-blue-500'>
+                      ...Read More
+                    </button>
+                  </>
+                )}
+              </div>
+            )}
+          </td>
+          <td className='border p-2'>
+            {isEditing ? (
+              <input value={equipment.link} onChange={(e) => handleFieldChange(e, 'link')} />
+            ) : (
+              <a href={equipment.link} target="_blank" rel="noopener noreferrer" className='text-blue-500'>
+                {truncateLink(equipment.link)}
+              </a>
+            )}
+          </td>
+          <td className='border p-2'>
+            {isEditing ? (
+              <input value={equipment.quantity} onChange={(e) => handleFieldChange(e, 'quantity')} />
+            ) : (
+              equipment.quantity
+            )}
+          </td>
+          <td className='border p-2'>
+            {isEditing ? (
+              <input value={equipment.type} onChange={(e) => handleFieldChange(e, 'type')} />
+            ) : (
+              equipment.type
+            )}
+          </td>
+          <td className='border p-2'>
+            <div className='flex justify-center'>
+              {isEditing ? (
+                <>
+                  <button
+                    className='bg-green-500 text-white px-2 py-1 rounded-md flex items-center mr-1'
+                    onClick={() => handleSave(index)}
+                  >
+                    <PiCheckBold /> Save
+                  </button>
+                  <button
+                    className='bg-red-500 text-white px-2 py-1 rounded-md flex items-center'
+                    onClick={handleCancel}
+                  >
+                    <RxCross2 /> Cancel
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    className='bg-blue-500 text-white px-2 py-1 rounded-md flex items-center mr-1'
+                    onClick={() => handleEdit(index)}
+                  >
+                    <BiSolidEditAlt /> Edit
+                  </button>
+                  <button
+                    className='bg-red-500 text-white px-2 py-1 rounded-md flex items-center'
+                    onClick={() => deleteAlert(index)}
+                  >
+                    <RiDeleteBin6Line /> Delete
+                  </button>
+                </>
+              )}
+            </div>
+          </td>
+        </tr>
+      );
+    }
     return null;
   };
   
-
   const renderHeaderRow = () => {
     const columnNames = ['S.No', 'Equipment Name', 'Lab', 'Description', 'More Info', 'Quantity','Type', 'Action'];
 

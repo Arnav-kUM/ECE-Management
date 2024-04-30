@@ -314,11 +314,14 @@ const StudentEquipment = ({ user }) => {
             />
           </div>
           <div className="mb-4">
-            <label className="block mb-2">Number of Days:</label>
+            <label className="block mb-2">Number of Days:(Not more than 30 Days)</label>
             <input
               type="number"
               value={requestedDays}
-              onChange={(e) => setRequestedDays(e.target.value)}
+              onChange={(e) => {
+                const value = Math.min(Math.max(1, e.target.value), 30);
+                setRequestedDays(value);
+              }}
               className="w-full p-2 border rounded"
             />
           </div>

@@ -13,6 +13,7 @@ const AdminDashboard = () => {
   const [studentIdToDelete, setStudentIdToDelete] = useState("");
   const [studentEmailToDelete, setStudentEmailToDelete] = useState("");
   const [studentEquipedData,setStudentEquipedData] = useState([]);
+  const token= localStorage.getItem("token");
 
   useEffect(() => {
     setLoading(true);
@@ -47,7 +48,6 @@ const AdminDashboard = () => {
   const fetchStudentEqipedItems = async (studentID) => {
     const statuses = ["accepted", "returning"]; // Use an array for multiple statuses
     const lab = 'All';
-    const token= localStorage.getItem("token")
     try {
       const response = await fetch(
         `http://localhost:3000/api/transaction/requests/${statuses}/${lab}/${studentID}`,
@@ -58,7 +58,6 @@ const AdminDashboard = () => {
           },
         }
       );
-      console.log(response);
       const data = await response.json();
 
       const requestsArray = data.Rrequests || [];
@@ -90,6 +89,7 @@ const AdminDashboard = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({ studentID: studentIdToDelete })
       });
@@ -217,11 +217,12 @@ const AdminDashboard = () => {
                 </table>
               </div>
               : 
-              <h2 className= 'text-gray-500 text-5xl mb-10'>Student has no Item equiped</h2>
+              <div className="flex flex-col items-center w-full">
+                <h2 className= 'text-gray-500 text-5xl mt-10'>Student has no Item equiped</h2>
+              </div>
             }
           </div>
-          <div className={`flex flex-col items-center ${studentEquipedData.length === 0 ? `justify-center h-full`: `justify-end`} `}>
-            
+          <div className={`flex flex-col items-center ${studentEquipedData.length === 0 ? `justify-center h-full`: `justify-end`} `}>  
             <h2 className={`${studentEquipedData.length === 0 ? `text-5xl mb-4`:'text-3xl'}`}>Are you sure?</h2>
             <p className={`${studentEquipedData.length === 0 ? `text-2xl mb-3`:'text-2xl mb-1'}`}>{`You want to clear dues of ${studentEmailToDelete} ?`}</p>
             <div>

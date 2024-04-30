@@ -9,6 +9,7 @@ import SideBar from '../Components/AdminSidebar.jsx';
 import AuthContext from '../Context/AuthContext.jsx';
 import AdminDashboard from '../Components/AdminDashboard.jsx';
 import AdminLogs from '../Components/AdminLogs.jsx';
+import AdminClearedDuesLogs from '../Components/AdminClearedDuesLogs.jsx';
 import { jwtDecode } from 'jwt-decode';
 
 const AdminPage = () => {
@@ -62,6 +63,7 @@ const AdminPage = () => {
               <Route element={<AdminBorrowRequest user={user} />} path="/brequest" />
               <Route element={<AdminReturnReqest user={user} />} path="/rrequest" />
               <Route element={<AdminLogs user={user} />} path="/logs" />
+              <Route element={<AdminClearedDuesLogs user={user} />} path="/dues_logs" />
             </Routes>
           )}
         </div>
