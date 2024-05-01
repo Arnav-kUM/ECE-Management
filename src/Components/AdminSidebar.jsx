@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const SideBar = () => {
   return (
-    <div className="bg-[#3dafaa] h-screen text-center w-[285px] mt-4">
+    <div className="bg-[#3dafaa] h-screen text-center w-[19vw] mt-4">
       <div className="flex flex-col">
         <Link
           to="/admin"

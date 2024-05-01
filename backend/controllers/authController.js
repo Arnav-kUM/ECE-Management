@@ -249,7 +249,6 @@ const forgotPassword = async(req, res) => {
 
 const disableStudent = async (req, res) => {
   try {
-    console.log('disable: ',req.body)
     const { studentID } = req.body;
     const lab = req.lab;
     const student = await Student.findById(studentID);

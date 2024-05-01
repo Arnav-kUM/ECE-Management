@@ -254,8 +254,7 @@ const AdminDashboard = () => {
           />
         </div>
       ) : (
-        <div>
-          <h2>Student List</h2>
+        <div className="ml-2">
           <div className="flex items-center mb-4">
             <div className="mr-2">
               <label className="block mb-0">Batch:</label>
@@ -282,7 +281,7 @@ const AdminDashboard = () => {
               )}
             </div>
           </div>
-          <div className="overflow-auto max-w-[82vw] max-h-[80vh]">
+          <div className="overflow-auto max-w-[80vw] max-h-[80vh]">
             <table className="w-full border-collapse border">
               <thead className="sticky top-0">{renderHeader()}</thead>
               <tbody>

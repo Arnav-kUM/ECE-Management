@@ -81,7 +81,7 @@ function AdminClearedDuesLogs() {
                     />
                 </div>
             ) : (
-                <div className="overflow-auto max-w-[82vw] max-h-[80vh]">
+                <div className="overflow-auto max-w-[80vw] max-h-[80vh] ml-2">
                     <table className="w-full border-collapse border">
                     <thead className="sticky top-0">{renderHeader()}</thead>
                     <tbody>

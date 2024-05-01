@@ -417,7 +417,7 @@ const EquipmentTable = ({user}) => {
     // <div className=''>
       <div className=''>
       <div >
-      <div className="flex justify-between my-2">
+      <div className="flex justify-between my-2 ml-2">
         <div className='flex'>
           <div className="flex items-center">
             <label className="block mb-0 mr-2">Search:</label>
@@ -521,7 +521,7 @@ const EquipmentTable = ({user}) => {
       ) : (
         <>
           
-          <div className='overflow-auto max-w-[82vw] max-h-[80vh]'>
+          <div className='overflow-auto max-w-[80vw] max-h-[80vh] ml-2'>
             <table className='w-full border-collapse border'>
               <thead className='sticky top-0'>{renderHeaderRow()}</thead>
               <tbody>

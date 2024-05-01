@@ -231,7 +231,7 @@ const AdminReturnRequest = ({ user }) => {
           />
        </div>
       ):(
-        <div className='overflow-auto max-w-[82vw] max-h-[82vh]'>
+        <div className='overflow-auto max-w-[80vw] max-h-[82vh] ml-2'>
           <table className='w-full border-collapse border'>
             <thead className='sticky top-0'>{renderHeader()}</thead>
             <tbody>

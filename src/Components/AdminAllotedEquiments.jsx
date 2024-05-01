@@ -124,7 +124,7 @@ const AdminBorrowRequest = ({ user }) => {
  
 
   return (
-    <div>
+    <div className="ml-2">
       <div className="flex mt-2">
         <div className="flex items-center mr-2">
           <label className="block mb-0 mr-2">Search:</label>
@@ -162,7 +162,7 @@ const AdminBorrowRequest = ({ user }) => {
           />
         </div>
       ):(
-      <div className='overflow-auto max-w-[82vw] max-h-[82vh] mt-2'>
+      <div className='overflow-auto max-w-[80vw] max-h-[82vh] mt-2'>
         <table className='w-full border-collapse border'>
           <thead className='sticky top-0'>{renderHeader()}</thead>
           <tbody>
