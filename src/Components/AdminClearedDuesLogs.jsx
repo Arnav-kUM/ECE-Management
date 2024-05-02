@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
+import * as XLSX from "xlsx";
 
 function AdminClearedDuesLogs() {
     const [loading, setLoading] = useState(true);
@@ -68,8 +69,43 @@ function AdminClearedDuesLogs() {
         );
     }
 
+    const handleDownload = () => {
+        let data = []
+        for (const i of tabledata){
+            const formattedDuesClearedDate = new Date(i.student.duesClearedOn).toLocaleDateString(
+                "en-GB",
+                {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                }
+            );
+            let row = {}
+            row['Student Email ID'] = i['student']['email']
+            row['Student Contact Number'] = i['student']['contactNumber']
+            row['Cleared By'] = i['admin']
+            row['Cleared On'] = formattedDuesClearedDate
+            data.push(row)
+        }
+
+        const ws = XLSX.utils.json_to_sheet(data);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, `Cleared Dues`);
+        XLSX.writeFile(
+        wb,
+        `Cleared_dues.xlsx`
+        );
+    }
+
     return (
         <div>
+            <div className="flex justify-end my-1">  
+                <button className="bg-[#3dafaa] text-white px-4 py-2 rounded-full cursor-pointer font-bold"
+                onClick={handleDownload}
+                >
+                Download
+                </button>
+            </div>
             {loading ? (
                 <div className="flex justify-center">
                     <ClipLoader

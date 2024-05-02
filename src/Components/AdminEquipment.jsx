@@ -389,11 +389,34 @@ const EquipmentTable = ({user}) => {
         const headerRow = Object.keys(sheetData[0]);
 
         const courses = sheetData.map((rowData) => {
-          const courses = {};
+          const mappedCourse = {};
           headerRow.forEach((field) => {
-            courses[field] = rowData[field];
+            // Map headers to desired names
+            switch (field) {
+                case 'Equipment Name':
+                    mappedCourse['name'] = rowData[field];
+                    break;
+                case 'Lab':
+                    mappedCourse['lab'] = rowData[field];
+                    break;
+                case 'Description':
+                    mappedCourse['description'] = rowData[field];
+                    break;
+                case 'More Info':
+                    mappedCourse['link'] = rowData[field];
+                    break;
+                case 'Quantity':
+                    mappedCourse['quantity'] = rowData[field];
+                    break;
+                case 'Type':
+                    mappedCourse['type'] = rowData[field];
+                    break;
+                default:
+                    // Do nothing or handle unrecognized headers
+                    break;
+            }
           });
-          return courses;
+          return mappedCourse;
         });
         
         const response = await fetch('http://localhost:3000/api/equipment/equipments', {
@@ -404,7 +427,6 @@ const EquipmentTable = ({user}) => {
           },
           body: JSON.stringify(courses), // Sending array of JSON objects
         });
-        console.log(response)
       };
       reader.onerror = (error) => {
         console.error('Error reading XLSX:', error);
