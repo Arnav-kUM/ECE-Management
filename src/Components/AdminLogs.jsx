@@ -13,7 +13,7 @@ function AdminLogs({ user }) {
     "Contact",
     "Quantity",
     "Additional Info",
-    "Requested On",
+    "Issued On",
     "Due Date",
     "Retuned On",
     "Remark",

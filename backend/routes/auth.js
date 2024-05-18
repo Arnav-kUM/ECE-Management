@@ -10,9 +10,9 @@ router.post('/addStudent', addStudent);
 router.post('/addAdmin',addAdmin);
 router.post( '/sendotp' ,sendOtp );
 router.post( '/verifyotp', verifyOtp );
-router.get('/students',students );
+router.get('/students/:year',students );
 router.post('/forgotPassword', forgotPassword);
 router.post('/disableStudent',adminAuthMiddleware, disableStudent );
-router.get('/dueslogs', adminAuthMiddleware, getDisablesStudentLogs)
+router.get('/dueslogs/:year', adminAuthMiddleware, getDisablesStudentLogs)
 
 module.exports = router;

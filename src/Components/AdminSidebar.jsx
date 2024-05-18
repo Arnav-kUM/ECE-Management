@@ -45,14 +45,21 @@ const SideBar = () => {
           to="/admin/logs"
           className="bg-[#3dafaa] p-2 h-16 hover:bg-[rgb(50,140,135)] focus:bg-[rgb(50,140,135)] text-white font-bold"
         >
-          LOGS
+          ISSUE RETURN HISTORY
         </Link>
         <hr className="border-t-2" />
         <Link
           to="/admin/dues_logs"
           className="bg-[#3dafaa] p-2 h-16 hover:bg-[rgb(50,140,135)] focus:bg-[rgb(50,140,135)] text-white font-bold"
         >
-          DUES LOGS
+          ALL CLEARED DUES
+        </Link>
+        <hr className="border-t-2" />
+        <Link
+          to="/admin/dues_logs"
+          className="bg-[#3dafaa] p-2 h-16 hover:bg-[rgb(50,140,135)] focus:bg-[rgb(50,140,135)] text-white font-bold"
+        >
+          INVENTORY UPDATE LOGS
         </Link>
         <hr className="border-t-2" />
       </div>

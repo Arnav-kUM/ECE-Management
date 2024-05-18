@@ -1,28 +1,38 @@
 import React, { useEffect, useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import Modal from 'react-modal';
-import Swal from "sweetalert2";
+import {AiOutlineSearch} from "react-icons/ai";
 
 const AdminDashboard = () => {
   const [students, setStudents] = useState([]);
   const [selectedBatch, setSelectedBatch] = useState("");
   const [selectedBranch, setSelectedBranch] = useState("");
-  const [selectedGraduationYear, setSelectedGraduationYear] = useState("");
+  const [selectedGraduationYear, setSelectedGraduationYear] = useState(new Date().getFullYear());
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [studentIdToDelete, setStudentIdToDelete] = useState("");
   const [studentEmailToDelete, setStudentEmailToDelete] = useState("");
   const [studentEquipedData,setStudentEquipedData] = useState([]);
+  const [modalLoading, setModalLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const token= localStorage.getItem("token");
 
   useEffect(() => {
     setLoading(true);
     fetchStudents();
-  }, []);
+  }, [selectedGraduationYear,searchQuery]);
 
   const fetchStudents = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/auth/students");
+      const response = await fetch(`http://localhost:3000/api/auth/students/${selectedGraduationYear}?searchStudent=${searchQuery}`,
+      {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    }
+      );
       const data = await response.json();
 
       if (data.success) {
@@ -48,7 +58,9 @@ const AdminDashboard = () => {
   const fetchStudentEqipedItems = async (studentID) => {
     const statuses = ["accepted", "returning"]; // Use an array for multiple statuses
     const lab = 'All';
+    setModalLoading(true);
     try {
+
       const response = await fetch(
         `http://localhost:3000/api/transaction/requests/${statuses}/${lab}/${studentID}`,
         {
@@ -73,8 +85,10 @@ const AdminDashboard = () => {
       });
 
       setStudentEquipedData(requestDataArray);
+      setModalLoading(false);
     }
     catch (error){
+      setModalLoading(false);
       alert("Error in fetching student details");
     }
   }
@@ -128,11 +142,8 @@ const AdminDashboard = () => {
 
     const isBranchSelected =
       selectedBranch === "" || student.branch === selectedBranch;
-    const isGraduationYearSelected =
-      selectedGraduationYear === "" ||
-      student.graduationYear === parseInt(selectedGraduationYear);
 
-    if (isBatchSelected && isBranchSelected && isGraduationYearSelected) {
+    if (isBatchSelected && isBranchSelected) {
       return (
         <tr key={index}>
           <td className="border p-2 text-center">{index + 1}</td>
@@ -160,19 +171,18 @@ const AdminDashboard = () => {
     return null;
   };
 
-  const renderFilterOptions = (options, setSelectedOption, selectedOption) => (
+  const renderFilterOptions = (setSelectedOption, selectedOption) => (
     <select
       value={selectedOption}
-      onChange={(e) => setSelectedOption(e.target.value)}
+      onChange={(e) => {setSelectedOption(e.target.value); setSearchQuery('');}}
       className="p-2 border rounded"
     >
-      <option value="">All</option>
-      {options.map((option) => (
-        <option key={option} value={option}>
-          {option}
-        </option>
-      ))}
+      <option value="All">All</option>
+      <option value={new Date().getFullYear()}>
+        {new Date().getFullYear()}
+      </option>
     </select>
+    
   );
 
   const renderEquipmentDetails = (requestData, index) => {
@@ -188,6 +198,14 @@ const AdminDashboard = () => {
     );
   };
 
+  const handleSearch = (e) => {
+
+    e.preventDefault();
+    const inputElement = e.currentTarget.previousSibling;
+    const query = inputElement.value;  // Use a local variable
+    setSearchQuery(query);
+  }
+
   return (
     <>
       <Modal
@@ -195,52 +213,64 @@ const AdminDashboard = () => {
         onRequestClose={closeModal}
         contentLabel="Confirm Clear Dues"
       >
-        <div className="flex flex-col justify-evenly h-full">
-
-          <div>
-            {
-              studentEquipedData.length !== 0 ?
-              <div className="flex flex-col items-center w-full mb-5">
-                <h2 className= 'text-gray-500 text-5xl mb-10'>Student has following Items equiped</h2>
-                <table className="w-full max-h-[40vh] overflow-auto">
-                  <thead>
-                    <tr className="bg-gray-400">
-                      <th className="border p-2 text-center">S.No.</th>
-                      <th className="border p-2 text-center">Equipment Name</th>
-                      <th className="border p-2 text-center">Lab</th>
-                      <th className="border p-2 text-center">Quantity</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  {studentEquipedData.map((data, index) => renderEquipmentDetails(data, index))}
-                  </tbody>
-                </table>
-              </div>
-              : 
-              <div className="flex flex-col items-center w-full">
-                <h2 className= 'text-gray-500 text-5xl mt-10'>Student has no Item equiped</h2>
-              </div>
-            }
+        {modalLoading ? (
+          <div className="flex justify-center items-center h-full">
+            <ClipLoader
+              color={'#3dafaa'}
+              loading={modalLoading}
+              size={100}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
           </div>
-          <div className={`flex flex-col items-center ${studentEquipedData.length === 0 ? `justify-center h-full`: `justify-end`} `}>  
-            <h2 className={`${studentEquipedData.length === 0 ? `text-5xl mb-4`:'text-3xl'}`}>Are you sure?</h2>
-            <p className={`${studentEquipedData.length === 0 ? `text-2xl mb-3`:'text-2xl mb-1'}`}>{`You want to clear dues of ${studentEmailToDelete} ?`}</p>
+        ) : (
+          <div className="flex flex-col justify-evenly h-full">
+
             <div>
-              <button 
-                onClick={handleClearDues}
-                className="mr-2 p-2 bg-blue-500 rounded-lg text-white hover:bg-blue-600"
-              >
-                Clear Dues
-              </button>
-              <button 
-                onClick={closeModal}
-                className="p-2 bg-red-500 rounded-lg text-white hover:bg-red-600"
-              >
-                Cancel
-              </button>
+              {
+                studentEquipedData.length !== 0 ?
+                <div className="flex flex-col items-center w-full mb-5">
+                  <h2 className= 'text-gray-500 text-5xl mb-10'>Student has following Items equiped</h2>
+                  <table className="w-full max-h-[40vh] overflow-auto">
+                    <thead>
+                      <tr className="bg-gray-400">
+                        <th className="border p-2 text-center">S.No.</th>
+                        <th className="border p-2 text-center">Equipment Name</th>
+                        <th className="border p-2 text-center">Lab</th>
+                        <th className="border p-2 text-center">Quantity</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {studentEquipedData.map((data, index) => renderEquipmentDetails(data, index))}
+                    </tbody>
+                  </table>
+                </div>
+                : 
+                <div className="flex flex-col items-center w-full">
+                  <h2 className= 'text-gray-500 text-5xl mt-10'>Student has no Item equiped</h2>
+                </div>
+              }
+            </div>
+            <div className={`flex flex-col items-center ${studentEquipedData.length === 0 ? `justify-center h-full`: `justify-end`} `}>  
+              <h2 className={`${studentEquipedData.length === 0 ? `text-5xl mb-4`:'text-3xl'}`}>Are you sure?</h2>
+              <p className={`${studentEquipedData.length === 0 ? `text-2xl mb-3`:'text-2xl mb-1'}`}>{`You want to clear dues of ${studentEmailToDelete} ?`}</p>
+              <div>
+                <button 
+                  onClick={handleClearDues}
+                  className="mr-2 p-2 bg-blue-500 rounded-lg text-white hover:bg-blue-600"
+                >
+                  Clear Dues
+                </button>
+                <button 
+                  onClick={closeModal}
+                  className="p-2 bg-red-500 rounded-lg text-white hover:bg-red-600"
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </Modal>
 
       {loading ? (
@@ -255,31 +285,48 @@ const AdminDashboard = () => {
         </div>
       ) : (
         <div className="ml-2">
-          <div className="flex items-center mb-4">
-            <div className="mr-2">
-              <label className="block mb-0">Batch:</label>
-              {renderFilterOptions(
-                ['btech', 'mtech', 'phd'],
-                setSelectedBatch,
-                selectedBatch
-              )}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center mb-2">
+              <div className="mr-2">
+                <label className="block mb-0">Batch:</label>
+                {renderFilterOptions(
+                  ['btech', 'mtech', 'phd'],
+                  setSelectedBatch,
+                  selectedBatch
+                )}
+              </div>
+              <div className="mr-2">
+                <label className="block mb-0">Branch:</label>
+                {renderFilterOptions(
+                  ['cse', 'csb', 'csam', 'csd', 'ece', 'csss', 'vlsi', 'csai'],
+                  setSelectedBranch,
+                  selectedBranch
+                )}
+              </div>
+              <div>
+                <label className="block mb-0">Graduation Year:</label>
+                {renderFilterOptions(
+                  setSelectedGraduationYear,
+                  selectedGraduationYear
+                )}
+              </div>
             </div>
-            <div className="mr-2">
-              <label className="block mb-0">Branch:</label>
-              {renderFilterOptions(
-                ['cse', 'csb', 'csam', 'csd', 'ece', 'csss', 'vlsi', 'csai'],
-                setSelectedBranch,
-                selectedBranch
-              )}
-            </div>
-            <div>
-              <label className="block mb-0">Graduation Year:</label>
-              {renderFilterOptions(
-                ["2023", "2024", "2025", "2026", "2027", "2028", "2029"],
-                setSelectedGraduationYear,
-                selectedGraduationYear
-              )}
-            </div>
+            <form className="w-[350px]" onSubmit={(e) => e.preventDefault()}>
+              <div className="relative mr-2">
+                <input
+                  type="search"
+                  placeholder="Search Students..."
+                  className="w-full p-4 rounded-full h-10 border border-[#3dafaa] outline-none focus:border-[#3dafaa]"
+
+                />
+                <button className="absolute right-0 top-1/2 -translate-y-1/2 p-3 bg-[#3dafaa] rounded-full search-button text-white"
+                  type="button"
+                  onClick={handleSearch}
+                >
+                  <AiOutlineSearch />
+                </button>
+              </div>
+            </form>
           </div>
           <div className="overflow-auto max-w-[80vw] max-h-[80vh]">
             <table className="w-full border-collapse border">

@@ -219,8 +219,22 @@ const addAdmin = async (req, res) => {
 
 const students = async (req, res) => {
   try {
+    const {year} = req.params;
+    const searchStudent = req.query.searchStudent;
+    let baseQuery = {};
+    baseQuery.clearDues = false;
+    if (year !== 'All'){
+      baseQuery.graduationYear = year;
+    }
+    if (searchStudent !== ''){
+      delete baseQuery.graduationYear;
+      baseQuery.$or = [
+        { fullName: { $regex: searchStudent, $options: 'i' } }, // Case-insensitive search for fullName
+        { rollNumber: { $regex: searchStudent, $options: 'i' } } // Case-insensitive search for rollNumber
+      ];
+    }
     // Fetch all students from the database
-    const students = await Student.find({ clearDues: false }, '-password'); // Exclude the password field from the response
+    const students = await Student.find(baseQuery, '-password'); // Exclude the password field from the response
 
     // Send the list of students in the response
     res.status(200).json({ success: true, students });
@@ -276,14 +290,31 @@ const disableStudent = async (req, res) => {
 const getDisablesStudentLogs = async (req, res) => {
   try{
     const lab = req.lab;
-
+    const {year} = req.params;
+    const searchStudent = req.query.searchStudent;
     const admin = await Admin.findOne({lab: lab});
 
     if (!admin) {
       return res.status(400).json({ success: false, message: 'Unauthorized user' });
     }
-    const disabledStudents = await Student.find({clearDues: true});
-    
+    let baseQuery = {};
+    baseQuery.clearDues = true;
+
+    if (year !== 'All' && searchStudent === ''){
+      // Parse the year from req.params and create start and end dates
+      const startDate = new Date(`${year}-01-01T00:00:00.000Z`);
+      const endDate = new Date(`${year}-12-31T23:59:59.999Z`);
+      baseQuery.duesClearedOn = { $gte: startDate, $lte: endDate };
+    }
+
+    if (searchStudent !== ''){
+      baseQuery.$or = [
+        { fullName: { $regex: searchStudent, $options: 'i' } }, // Case-insensitive search for fullName
+        { rollNumber: { $regex: searchStudent, $options: 'i' } } // Case-insensitive search for rollNumber
+      ];
+    }
+
+    const disabledStudents = await Student.find(baseQuery,'-password');
     duesLogs = []
     for (const i of disabledStudents){
       data = {};

@@ -271,7 +271,7 @@ const EquipmentTable = ({user}) => {
               <div>
                 {equipment.showFullDescription ? (
                   <>
-                  equipment.description
+                  {equipment.description}
                   <button onClick={toggleShowFullDescription} className='text-blue-500'>
                       ...Show Less
                   </button>
