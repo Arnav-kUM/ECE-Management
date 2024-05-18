@@ -246,17 +246,34 @@ const students = async (req, res) => {
 
 const forgotPassword = async(req, res) => {
   try {
-    const {email , password} = req.body;
-    const student = await Student.findOne({ email });
-    if(!student){
-      return res.status(400).json({ success: false, message: 'No user registed with this Email Id' })
+    const {email , password, user} = req.body;
+
+    if (user === 'student'){
+      const student = await Student.findOne({ email });
+      if(!student){
+        return res.status(400).json({ success: false, message: 'No user registed with this Email Id' })
+      }
+      const hashedPassword = await argon2.hash(password);
+      student.password = hashedPassword;
+      await student.save();
+      return res.status(200).json({success:true, message:"password updated successfully"});
     }
-    const hashedPassword = await argon2.hash(password);
-    student.password = hashedPassword;
-    await student.save();
-    res.status(200).json({success:true, message:"password updated successfully"});
+
+    if (user === 'admin'){
+      const admin = await Admin.findOne({ email });
+      if(!admin){
+        return res.status(400).json({ success: false, message: 'No user registed with this Email Id' })
+      }
+      const hashedPassword = await argon2.hash(password);
+      admin.password = hashedPassword;
+      await admin.save();
+      return res.status(200).json({success:true, message:"password updated successfully"});
+    }
+    
+    return res.status(400).json({ success: false, message: 'Invalid user type' })
+    
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Internal Server Error' });
+    return res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 }
 

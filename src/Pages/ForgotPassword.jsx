@@ -8,6 +8,7 @@ const ForgotPassword = () => {
   const [Otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("");
   const host = "http://localhost:3000";
 
   const startLoader = () => {
@@ -24,6 +25,10 @@ const ForgotPassword = () => {
   }, []);
 
   const handleSendOTP = async () => {
+    if (selectedOption === ""){
+      alert("Please select user type: Admin or Student");
+      return;
+    }
     if (email) {
       startLoader();
       const response = await fetch(`${host}/api/auth/sendotp`, {
@@ -80,7 +85,7 @@ const ForgotPassword = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email: email, password: password }),
+          body: JSON.stringify({ email: email, password: password, user: selectedOption }),
         });
   
         const json = await response.json();
@@ -121,7 +126,7 @@ const ForgotPassword = () => {
                 <label>New Password</label>
                 <input
                   className="text-black rounded-lg bg-white mt-2 p-2 border-2 border-gray-500 focus:bg-gray-200 focus:outline-none"
-                  type="password"
+                  type="text"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -141,6 +146,7 @@ const ForgotPassword = () => {
                   Forgot Password
                 </h2>
               </div>
+              
               {OtpSent ? (
                 <>
                   <div className="flex flex-col text-black py-2">
@@ -172,6 +178,30 @@ const ForgotPassword = () => {
                 </div>
               ) : (
                 <>
+                  <div className="flex mt-1 justify-around">
+                    <button
+                      className={`px-4 py-2 rounded-full cursor-pointer border ${
+                        selectedOption === "admin"
+                          ? "bg-[#3dafaa] text-white"
+                          : "border-[#3dafaa] hover:bg-[#3dafaa] hover:text-white"
+                      } outline-none focus:border-[#3dafaa]`}
+                      onClick={() => setSelectedOption("admin")}
+                      type="button"
+                    >
+                      Admin
+                    </button>
+                    <button
+                      className={`px-4 py-2 rounded-full cursor-pointer border ${
+                        selectedOption === "student"
+                          ? "bg-[#3dafaa] text-white"
+                          : "border-[#3dafaa] hover:bg-[#3dafaa] hover:text-white"
+                      } outline-none focus:border-[#3dafaa]`}
+                      onClick={() => setSelectedOption("student")}
+                      type="button"
+                    >
+                      Student
+                    </button>
+                  </div>
                   <div className="flex flex-col text-black py-2">
                     <label>Email Id</label>
                     <input

@@ -44,7 +44,6 @@ const LoginPage = () => {
   };
 
   const handleAdminLogin = async (e) => {
-    console.log("admin tried");
     // // Handle admin login logic here
     if (email && password) {
       const response = await fetch(`${host}/api/auth/admin`, {
