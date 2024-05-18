@@ -5,7 +5,6 @@ const AuthState = (props) => {
   const [user, setUser] = useState(null); // User state, initially null
   const login = (userData) => {
     setUser(userData);
-    console.log(userData)
   };
 
   return (

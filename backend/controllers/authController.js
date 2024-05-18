@@ -10,12 +10,12 @@ const secretKey = 'your-secret-key'; // Replace with your actual secret key
 
 // Function to generate a JWT token
 function generateToken(payload) {
-  return jwt.sign(payload, secretKey, { expiresIn: '1h' });
+  return jwt.sign(payload, secretKey, { expiresIn: '4h' });
 }
 
 // Function to generate and store OTP
 const generateAndStoreOTP = (email, otp) => {
-  const expirationTime = 3 * 60 * 1000; // OTP valid for 5 minutes
+  const expirationTime = 3 * 60 * 1000; // OTP valid for 3 minutes
   // Store the OTP along with its expiration time
   otpStorage.set(email, otp);
   console.log(otpStorage);
@@ -269,7 +269,7 @@ const forgotPassword = async(req, res) => {
       await admin.save();
       return res.status(200).json({success:true, message:"password updated successfully"});
     }
-    
+
     return res.status(400).json({ success: false, message: 'Invalid user type' })
     
   } catch (error) {
