@@ -5,6 +5,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 const AdminBorrowRequest = ({ user }) => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
+  const token = localStorage.getItem("token");
   const columnNames = [
     "S.No",
     "Equipment Name",
@@ -25,7 +26,14 @@ const AdminBorrowRequest = ({ user }) => {
     const status = "requested";
     try {
       const response = await fetch(
-        `http://localhost:3000/api/transaction/requests/${status}/${user.lab}`
+        `http://localhost:3000/api/transaction/requests/${status}/${user.lab}`,
+        {
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          }
+        }
       );
       const data = await response.json();
       console.log(data);
@@ -74,6 +82,10 @@ const AdminBorrowRequest = ({ user }) => {
         `http://localhost:3000/api/transaction/accept/${requestID}`,
         {
           method: "PUT",
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          }
         }
       );
 
@@ -95,6 +107,10 @@ const AdminBorrowRequest = ({ user }) => {
         `http://localhost:3000/api/transaction/decline/${requestID}`,
         {
           method: "PUT",
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          }
         }
       );
 
@@ -201,7 +217,7 @@ const AdminBorrowRequest = ({ user }) => {
           />
         </div>
     ) : (
-      <div className='overflow-auto max-w-[80vw] max-h-[82vh] mt-4 ml-2'>
+      <div className='overflow-auto max-w-[80vw] max-h-[83vh] mt-4 ml-2'>
         <table className='w-full border-collapse border'>
           <thead className='sticky top-0'>{renderHeader()}</thead>
           <tbody>

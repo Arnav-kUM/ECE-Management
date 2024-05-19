@@ -10,18 +10,20 @@ const {
   createReturnRequest,
   deleteRequest
 } = require("../controllers/transactionController");
-const transactionAuthMiddleware = require("../middleware/transactionAuth")
+
+const transactionAuthMiddleware = require("../middleware/transactionAuth");
+const adminAuthMiddleware =require('../middleware/adminAuth');
 
 router.post("/requests",transactionAuthMiddleware, createRequest);
 router.delete("/requests/delete",transactionAuthMiddleware, deleteRequest); 
 router.get("/srequests/:studentId",transactionAuthMiddleware, getRequestByStudentIDs);
 router.post("/return",transactionAuthMiddleware, createReturnRequest);
 
-router.put("/accept/:transactionId", acceptRequest);
-router.put("/decline/:transactionId", declineRequest);
-router.put("/transactions/confirm/:transactionId", confirmTransaction);
-router.get("/requests/:status/:lab/:studentID", getAllRequests);
-router.get("/requests/:status/:lab", getAllRequests);
+router.put("/accept/:transactionId", adminAuthMiddleware, acceptRequest);
+router.put("/decline/:transactionId", adminAuthMiddleware, declineRequest);
+router.put("/transactions/confirm/:transactionId", adminAuthMiddleware, confirmTransaction);
+router.get("/requests/:status/:lab/:studentID", adminAuthMiddleware, getAllRequests); // Used to fetch students who current equip any item from any/particular lab
+router.get("/requests/:status/:lab", adminAuthMiddleware, getAllRequests); // This function is used to fetch all borrow and return request to a particular lab
 
 
 

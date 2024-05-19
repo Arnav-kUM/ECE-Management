@@ -19,7 +19,6 @@ const adminAuthMiddleware = async (req, res, next) => {
     const [, token] = authToken.split(' '); // Split 'Bearer <token>'
    
     const decodedToken = decodeToken(token);
-    console.log(decodeToken)
 
     // Find the admin by email
     const admin = await Admin.findOne({ _id: decodedToken.id });

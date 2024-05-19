@@ -10,10 +10,11 @@ const {
 const router = express.Router();
 
 const adminAuthMiddleware =require('../middleware/adminAuth');
+const transactionAuthMiddleware = require("../middleware/transactionAuth");
 
 router.post('/equipments',adminAuthMiddleware, addEquipments);
-router.get('/equipments',getAllEquipments);
-router.get('/equipments/:labName', getEquipmentsByLab);
+router.get('/equipments', transactionAuthMiddleware, getAllEquipments);
+router.get('/equipments/:labName', adminAuthMiddleware, getEquipmentsByLab);
 router.put('/equipments/:id', adminAuthMiddleware, updateEquipments);
 router.delete('/equipments/:id', adminAuthMiddleware, deleteEquipments);
 router.get('/equipmentLog/:lab/:year', adminAuthMiddleware, getEquipmentLog);

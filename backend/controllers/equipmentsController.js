@@ -11,6 +11,7 @@ const addEquipments = async (req, res) => {
     for (const equipmentData of equipmentsData) {
       const { name, lab, description, link, quantity, type } = equipmentData;
 
+      // Check if the request is authenticated
       if (lab !== req.lab) {
         return res.status(401).json({ message: 'Unauthorized - Lab mismatch' });
       }
@@ -27,7 +28,7 @@ const addEquipments = async (req, res) => {
         currentLab: lab,
         oldLab: 'None',
         currentQuantity: quantity,
-        oldQuantity: 'None',
+        oldQuantity: 0,
         currentType: type,
         oldType: 'None',
         dateOfChange: dateOfCreation
@@ -45,8 +46,13 @@ const addEquipments = async (req, res) => {
 
 // Retrieve Equipment by Lab
 const getEquipmentsByLab = async (req, res) => {
-  try {
-    const labName = req.params.labName;
+  const labName = req.params.labName;
+  try {  
+    // Check if the request is authenticated
+    if (labName !== req.lab) {
+      return res.status(401).json({ message: 'Unauthorized - Access denied' });
+    }
+
     const equipmentList = await Equipment.find({ lab: labName });
     res.json(equipmentList);
   } catch (error) {
@@ -57,6 +63,10 @@ const getEquipmentsByLab = async (req, res) => {
 // Retrieve All Equipment
 const getAllEquipments = async (req, res) => {
   try {
+    // Check if the request is authenticated
+    if (!req.student) {
+      return res.status(401).json({ message: 'Unauthorized - Access denied' });
+    }
     const allEquipment = await Equipment.find();
     res.json(allEquipment);
   } catch (error) {
@@ -105,6 +115,11 @@ const updateEquipments = async (req, res) => {
 // Delete Equipment by ID
 const deleteEquipments = async (req, res) => {
   try {
+    // Check if the request is authenticated
+    if (!req.lab) {
+      return res.status(401).json({ message: 'Unauthorized - Access denied' });
+    }
+    // Proceed with deleting the equipment
     const equipmentId = req.params.id;
     await Equipment.findByIdAndRemove(equipmentId);
     res.json({ message: 'Equipment deleted successfully' });

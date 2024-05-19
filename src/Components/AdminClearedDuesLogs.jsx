@@ -132,7 +132,7 @@ function AdminClearedDuesLogs() {
                 <div className="flex items-center">
 
                     {/* Year Filter */}
-                    <label className="block mb-0 mr-1">Graduation Year:</label>
+                    <label className="block mb-0 mr-1">Cleared Year:</label>
                     {renderFilterOptions(
                         setSelectedGraduationYear,
                         selectedGraduationYear

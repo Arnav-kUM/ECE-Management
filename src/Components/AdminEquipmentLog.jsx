@@ -105,7 +105,7 @@ function AdminEquipmentLog({user}) {
         </div>
       ) : (
         <>
-          <div className='flex justify-between ml-2 mb-1 items-center'>
+          <div className='flex justify-between ml-2 mb-1 items-center mt-1'>
             <div className='flex items-center'>
               <label className="block mb-0 mr-1">Year:</label>
               {renderFilterOptions(

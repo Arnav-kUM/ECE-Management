@@ -217,8 +217,14 @@ const addAdmin = async (req, res) => {
   }
 };
 
+// This function fetch all students registered to the portal who have not cleared their dues yet
 const students = async (req, res) => {
   try {
+    // Check if the request is authenticated
+    if (!req.lab) {
+      return res.status(401).json({ message: 'Unauthorized - Access denied' });
+    }
+
     const {year} = req.params;
     const searchStudent = req.query.searchStudent;
     let baseQuery = {};

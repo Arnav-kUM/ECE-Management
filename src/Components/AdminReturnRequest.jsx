@@ -9,6 +9,7 @@ const AdminReturnRequest = ({ user }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [remark, setRemark] = useState('NA');
   const [requestID, setRequestID] = useState();
+  const token = localStorage.getItem("token");
 
   const columnNames = [
     "S.No",
@@ -30,7 +31,14 @@ const AdminReturnRequest = ({ user }) => {
   const fetchRequests = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/transaction/requests/returning/${user.lab}`
+        `http://localhost:3000/api/transaction/requests/returning/${user.lab}`,
+        {
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          }
+        }
       );
       const data = await response.json();
 
@@ -89,7 +97,8 @@ const AdminReturnRequest = ({ user }) => {
         {
           method: "PUT",
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ remark }),
         }
@@ -114,6 +123,10 @@ const AdminReturnRequest = ({ user }) => {
         `http://localhost:3000/api/transaction/decline/${requestID}`,
         {
           method: "PUT",
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          }
         }
       );
 
@@ -231,7 +244,7 @@ const AdminReturnRequest = ({ user }) => {
           />
        </div>
       ):(
-        <div className='overflow-auto max-w-[80vw] max-h-[82vh] ml-2'>
+        <div className='overflow-auto max-w-[80vw] max-h-[83vh] ml-2'>
           <table className='w-full border-collapse border'>
             <thead className='sticky top-0'>{renderHeader()}</thead>
             <tbody>

@@ -7,6 +7,7 @@ const AdminBorrowRequest = ({ user }) => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [lab, setLab] = useState(user.lab);
+  const token = localStorage.getItem("token");
   const columnNames = [
     "S.No",
     "Equipment Name",
@@ -28,7 +29,14 @@ const AdminBorrowRequest = ({ user }) => {
     const status = ["accepted","returning"];
     try {
       const response = await fetch(
-        `http://localhost:3000/api/transaction/requests/${status}/${lab}`
+        `http://localhost:3000/api/transaction/requests/${status}/${lab}`,
+        {
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          }
+        }
       );
       const data = await response.json();
 
@@ -125,7 +133,7 @@ const AdminBorrowRequest = ({ user }) => {
 
   return (
     <div className="ml-2">
-      <div className="flex mt-2">
+      <div className="flex mt-1">
         <div className="flex items-center mr-2">
           <label className="block mb-0 mr-2">Search:</label>
           <input
@@ -136,7 +144,7 @@ const AdminBorrowRequest = ({ user }) => {
             className="p-2 border rounded"
           />
         </div>
-        <div className="flex items-center mt-2">
+        <div className="flex items-center">
           <label className="block mb-0 mr-2">Lab:</label>
           <select
             value={lab}
@@ -162,7 +170,7 @@ const AdminBorrowRequest = ({ user }) => {
           />
         </div>
       ):(
-      <div className='overflow-auto max-w-[80vw] max-h-[82vh] mt-2'>
+      <div className='overflow-auto max-w-[80vw] max-h-[80vh] mt-1'>
         <table className='w-full border-collapse border'>
           <thead className='sticky top-0'>{renderHeader()}</thead>
           <tbody>

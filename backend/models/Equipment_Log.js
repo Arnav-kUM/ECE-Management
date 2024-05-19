@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 // Define the lab enumeration values
-const labEnum = ["lab1", "lab2", "lab3","lab4"];
+const labEnum = ["lab1", "lab2", "lab3","lab4", "None"];
 
 // Define the equipment schema
 const equipmentLogSchema = new mongoose.Schema({
@@ -31,7 +31,7 @@ const equipmentLogSchema = new mongoose.Schema({
   },
   oldQuantity: {
     type: Number,
-    default: 'None',
+    default: 0,
     required: true,
   },
   currentType:{

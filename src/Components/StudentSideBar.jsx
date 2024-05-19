@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const SideBar = () => {
   return (
-    <div className='bg-[#3dafaa] h-screen text-center w-[285px] mt-4'>
+    <div className='bg-[#3dafaa] h-screen text-center w-[19vw] mt-4'>
       <div className='flex flex-col'>
         <Link to="/student" className='bg-[#3dafaa] p-2 h-16 hover:bg-[rgb(50,140,135)] focus:bg-[rgb(50,140,135)] text-white font-bold'>
           DashBoard
@@ -15,10 +15,6 @@ const SideBar = () => {
         <hr className='border-t-2' />
         <Link to="/student/brequest" className='bg-[#3dafaa] p-2 h-16 hover:bg-[rgb(50,140,135)] focus:bg-[rgb(50,140,135)] text-white font-bold'>
             Borrow Request
-        </Link>
-        <hr className='border-t-2' />
-        <Link to="/student/feedback" className='bg-[#3dafaa] p-2 h-16 hover:bg-[rgb(50,140,135)] focus:bg-[rgb(50,140,135)] text-white font-bold'>
-            Demand Equipment
         </Link>
         <hr className='border-t-2' />
       </div>

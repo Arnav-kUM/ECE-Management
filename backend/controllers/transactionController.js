@@ -141,6 +141,13 @@ const createRequest = async (req, res) => {
     const studentId= req.student
     const equipment = await Equipment.findById(equipmentId);
     const admin = await Admin.findOne({lab});
+
+    // Check if the request is authenticated
+    const student = await Student.findById(studentId);
+    if (!student) {
+      return res.status(400).json({ error: "Student not found" });
+    }
+
     if (!equipment) {
       return res.status(400).json({ error: "Equipment not found" });
     }
@@ -148,11 +155,6 @@ const createRequest = async (req, res) => {
     // Check if equipment quantity is sufficient for the request
     if (equipment.quantity < quantity) {
       return res.status(400).json({ error: "Not enough equipment available" });
-    }
-
-    const student = await Student.findById(studentId);
-    if (!student) {
-      return res.status(400).json({ error: "Student not found" });
     }
 
     // Calculate the return date based on the number of days to use
@@ -228,6 +230,11 @@ const acceptRequest = async (req, res) => {
     const lab = request.lab;
     const admin = await Admin.findOne({ lab: lab});
 
+    // Check if the request is authenticated
+    if (!req.lab) {
+      return res.status(401).json({ message: 'Unauthorized - Access denied' });
+    }
+
     if (!request) {
       return res.status(400).json({ error: "Request not found" });
     }
@@ -264,6 +271,12 @@ const acceptRequest = async (req, res) => {
 // Decline a borrow request (Admin)
 const declineRequest = async (req, res) => {
   try {
+
+    // Check if the request is authenticated
+    if (!req.lab) {
+      return res.status(401).json({ message: 'Unauthorized - Access denied' });
+    }
+
     const { transactionId } = req.params;
 
     const request = await Transaction.findById(transactionId);
@@ -301,8 +314,15 @@ const declineRequest = async (req, res) => {
 };
 
 // Fetch all requests
+// This function is used to fetch all borrow and return request to a particular lab
+// Also used to fetch students who current equip any item from any/particular lab
 const getAllRequests = async (req, res) => {
   
+  // Check if the request is authenticated
+  if (!req.lab) {
+    return res.status(401).json({ message: 'Unauthorized - Access denied' });
+  }
+
   const { status,lab, studentID } = req.params;
   
   const baseQuery = {};
@@ -355,7 +375,7 @@ const getRequestByStudentIDs = async (req, res) => {
   try {
     const studentId  = req.student;
     const { status } = req.query;
-    console.log("hello",studentId)
+
     // Create a base query with the student ID
     const baseQuery = { student: studentId };
 
@@ -390,8 +410,12 @@ const getRequestByStudentIDs = async (req, res) => {
 
 // Confirm a transaction (Admin)
 const confirmTransaction = async (req, res) => {
-  console.log("req")
+
   try {
+    // Check if the request is authenticated
+    if (!req.lab) {
+      return res.status(401).json({ message: 'Unauthorized - Access denied' });
+    }
     const { transactionId } = req.params;
 
     const transaction = await Transaction.findById(transactionId);

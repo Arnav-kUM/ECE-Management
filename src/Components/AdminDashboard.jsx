@@ -284,27 +284,11 @@ const AdminDashboard = () => {
           />
         </div>
       ) : (
-        <div className="ml-2">
+        <div className="ml-2 mt-1">
           <div className="flex items-center justify-between">
             <div className="flex items-center mb-2">
-              <div className="mr-2">
-                <label className="block mb-0">Batch:</label>
-                {renderFilterOptions(
-                  ['btech', 'mtech', 'phd'],
-                  setSelectedBatch,
-                  selectedBatch
-                )}
-              </div>
-              <div className="mr-2">
-                <label className="block mb-0">Branch:</label>
-                {renderFilterOptions(
-                  ['cse', 'csb', 'csam', 'csd', 'ece', 'csss', 'vlsi', 'csai'],
-                  setSelectedBranch,
-                  selectedBranch
-                )}
-              </div>
-              <div>
-                <label className="block mb-0">Graduation Year:</label>
+              <div className="flex items-center">
+                <label className="block mb-0 mr-2">Graduation Year:</label>
                 {renderFilterOptions(
                   setSelectedGraduationYear,
                   selectedGraduationYear

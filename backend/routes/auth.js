@@ -10,8 +10,8 @@ router.post('/addStudent', addStudent);
 router.post('/addAdmin',addAdmin);
 router.post( '/sendotp' ,sendOtp );
 router.post( '/verifyotp', verifyOtp );
-router.get('/students/:year',students );
 router.post('/forgotPassword', forgotPassword);
+router.get('/students/:year',adminAuthMiddleware, students ); // This function fetch all students registered to the portal who have not cleared their dues yet
 router.post('/disableStudent',adminAuthMiddleware, disableStudent );
 router.get('/dueslogs/:year', adminAuthMiddleware, getDisablesStudentLogs)
 

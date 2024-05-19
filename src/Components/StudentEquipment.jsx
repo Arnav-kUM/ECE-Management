@@ -15,6 +15,7 @@ const StudentEquipment = ({ user }) => {
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [additionInfo, setAdditionalInfo] = useState("NA");
+  const token = localStorage.getItem("token");
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -25,7 +26,7 @@ const StudentEquipment = ({ user }) => {
   };
 
   const sendRequest = async () => {
-    const token = localStorage.getItem("token");
+    
     try {
       const response = await fetch(
         "http://localhost:3000/api/transaction/requests",
@@ -73,7 +74,14 @@ const StudentEquipment = ({ user }) => {
   const fetchEquipmentData = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3000/api/equipment/equipments"
+        "http://localhost:3000/api/equipment/equipments",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          }
+        }
       );
       const data = await response.json();
       setEquipmentData(data);
