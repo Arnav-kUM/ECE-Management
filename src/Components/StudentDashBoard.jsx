@@ -253,11 +253,11 @@ const StudentDashBoard = ({ user }) => {
         />
       </div>
     ) : (
-      <div className="mt-4">
+      <div className="">
         <div className="flex justify-center">
           <h3 className="font-bold text-3xl text-[#3dafaa]">Equiped Items</h3>
         </div>
-        <div className="overflow-auto max-w-[83vw] max-h-[30vh]">
+        <div className="overflow-auto max-w-[83vw] max-h-[40vh]">
           <table className="w-full border-collapse border">
             <thead className="sticky top-0">{renderEquipedHeader()}</thead>
             <tbody>
@@ -265,10 +265,10 @@ const StudentDashBoard = ({ user }) => {
             </tbody>
           </table>
         </div>
-        <div className="flex justify-center mt-8">
+        <div className="flex justify-center">
           <h3 className="font-bold text-3xl text-[#3dafaa]">Returned Items</h3>
         </div>
-        <div className="overflow-auto max-w-[83vw] max-h-[30vh]">
+        <div className="overflow-auto max-w-[83vw] max-h-[39vh]">
           <table className="w-full border-collapse border">
             <thead className="sticky top-0">{renderReturnedHeader()}</thead>
             <tbody>

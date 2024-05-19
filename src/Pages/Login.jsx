@@ -186,7 +186,7 @@ const LoginPage = () => {
           handleStudentForm();
           break;
         default:
-          alert("Please select an option: Admin, Department, Professor.");
+          alert("Please select an option: Admin or Student.");
           break;
       }
     }

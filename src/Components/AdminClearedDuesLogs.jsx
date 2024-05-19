@@ -61,6 +61,7 @@ function AdminClearedDuesLogs() {
             <tr className="bg-[#3dafaa] text-white">
                 <th className="border p-2 text-center">S.No</th>
                 <th className="border p-2 text-center">Student Email ID</th>
+                <th className="border p-2 text-center">Student Name</th>
                 <th className="border p-2 text-center">Roll No.</th>
                 <th className="border p-2 text-center">Student Contact No.</th>
                 <th className="border p-2 text-center">Dues Cleared By</th>
@@ -82,6 +83,7 @@ function AdminClearedDuesLogs() {
             <tr key={index}>
               <td className="border p-2 text-center">{index + 1}</td>
               <td className="border p-2 text-center">{data.student.email}</td>
+              <td className="border p-2 text-center">{data.student.fullName}</td>
               <td className="border p-2 text-center">{data.student.rollNumber}</td>
               <td className="border p-2 text-center">{data.student.contactNumber}</td>
               <td className="border p-2 text-center">{data.admin}</td>
