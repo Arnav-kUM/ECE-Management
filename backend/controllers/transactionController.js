@@ -10,8 +10,8 @@ const cron = require('node-cron');
 const transporter = nodemailer.createTransport({
   service: "Gmail",
   auth: {
-    user: "arnav20363@iiitd.ac.in",
-    pass: "zcqk zhpg wjkf xwxq", // use env file for this data , also kuch settings account ki change krni padti vo krliyo
+    user: "noreply-ecelabims@iiitd.ac.in",
+    pass: "cfoq swku iskc weoo", // use env file for this data , also kuch settings account ki change krni padti vo krliyo
   },
 });
 
@@ -34,7 +34,7 @@ const sendReturnReminderEmail = async (studentEmail, studentName, equipmentName,
   `;
   
   const mailOptions = {
-    from: 'arnav20363@iiitd.ac.in',
+    from: 'noreply-ecelabims@iiitd.ac.in',
     to: studentEmail,
     subject: subject,
     html: htmlContent,
@@ -77,7 +77,7 @@ const studentRequestMail = asyncHandler(
       </html>
     `;
     const mailOptions = {
-      from: "arnav20363@iiitd.ac.in",
+      from: "noreply-ecelabims@iiitd.ac.in",
       to: [adminEmail,studentEmail], // Use an array for multiple recipients
       subject: subject,
       html: htmlContent,
@@ -124,7 +124,7 @@ const requestApprovedAndDeclinedMail = asyncHandler(
       </html>
     `;
     const mailOptions = {
-      from: "arnav20363@iiitd.ac.in",
+      from: "noreply-ecelabims@iiitd.ac.in",
       to: [adminEmail, studentEmail], // Use an array for multiple recipients
       subject: subject,
       html: htmlContent,

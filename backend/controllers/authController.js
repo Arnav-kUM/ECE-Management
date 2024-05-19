@@ -28,8 +28,8 @@ const generateAndStoreOTP = (email, otp) => {
 const transporter = nodemailer.createTransport({
   service: 'Gmail',
   auth: {
-    user: 'arnav20363@iiitd.ac.in',
-    pass: 'zcqk zhpg wjkf xwxq', // use env file for this data , also kuch settings account ki change krni padti vo krliyo
+    user: 'noreply-ecelabims@iiitd.ac.in',
+    pass: 'cfoq swku iskc weoo', // use env file for this data , also kuch settings account ki change krni padti vo krliyo
   },
 });
 
@@ -60,7 +60,7 @@ const sendOtp = async (req, res) => {
 
   // Send OTP via email with the HTML content
   const mailOptions = {
-    from: 'btp3517@gmail.com',
+    from: 'noreply-ecelabims@iiitd.ac.in',
     to: email_id,
     subject: 'OTP Verification',
     html: htmlContent,
@@ -317,6 +317,7 @@ const getDisablesStudentLogs = async (req, res) => {
     let baseQuery = {};
     baseQuery.clearDues = true;
 
+    // Only apply year filter when there is no search query
     if (year !== 'All' && searchStudent === ''){
       // Parse the year from req.params and create start and end dates
       const startDate = new Date(`${year}-01-01T00:00:00.000Z`);

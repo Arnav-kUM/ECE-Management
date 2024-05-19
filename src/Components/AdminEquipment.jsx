@@ -162,8 +162,6 @@ const EquipmentTable = ({user}) => {
       const quantity = document.getElementById('newQuantity').value;
       const type = document.getElementById('newType').value;
 
-      const allotmentDays = 0;
-      console.log(lab);
       // Make sure all required fields are filled
       if (!name || !lab || !description || !quantity || !type) {
         Swal.fire('Error!', 'Please fill in all required fields.', 'error');
@@ -176,7 +174,7 @@ const EquipmentTable = ({user}) => {
       }
 
     const equipmentsData = [
-      { name: name, lab: lab, description: description, link: link, quantity: quantity, allotmentDays: allotmentDays, type: type }];
+      { name: name, lab: lab, description: description, link: link, quantity: quantity, type: type }];
 
       // Send a POST request to the backend to add new equipment
       const response = await fetch('http://localhost:3000/api/equipment/equipments', {
@@ -468,7 +466,7 @@ const EquipmentTable = ({user}) => {
          
             {/* Upload XLSX button */}
             <label className="rounded-full bg-[#3dafaa] text-white border-2 border-[#3dafaa] py-1 px-3 mt-2 mb-1 mr-1 hover:bg-white hover:text-[#3dafaa]">
-              Add vis XLSX
+              Add via XLSX
               <input
                 type="file"
                 accept=".xlsx"

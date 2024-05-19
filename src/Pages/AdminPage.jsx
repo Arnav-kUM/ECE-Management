@@ -10,6 +10,7 @@ import AuthContext from '../Context/AuthContext.jsx';
 import AdminDashboard from '../Components/AdminDashboard.jsx';
 import AdminLogs from '../Components/AdminLogs.jsx';
 import AdminClearedDuesLogs from '../Components/AdminClearedDuesLogs.jsx';
+import AdminEquipmentLog from '../Components/AdminEquipmentLog.jsx';
 import { jwtDecode } from 'jwt-decode';
 
 const AdminPage = () => {
@@ -64,6 +65,7 @@ const AdminPage = () => {
               <Route element={<AdminReturnReqest user={user} />} path="/rrequest" />
               <Route element={<AdminLogs user={user} />} path="/logs" />
               <Route element={<AdminClearedDuesLogs user={user} />} path="/dues_logs" />
+              <Route element={<AdminEquipmentLog user={user} />} path="/inventory_logs" />
             </Routes>
           )}
         </div>
