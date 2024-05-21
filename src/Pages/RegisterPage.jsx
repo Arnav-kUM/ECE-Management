@@ -17,6 +17,7 @@ const Register = () => {
         contactNumber: '',
         graduationYear: ''
     });
+    const Host = 'http://localhost:3000/';
 
     const rollNumberRegex = /^(phd|mt|\d+)/i;
 
@@ -45,7 +46,7 @@ const Register = () => {
                 return;
             }
             setLoading(true);
-            const response = await fetch('http://localhost:3000/api/auth/addStudent', {
+            const response = await fetch(`${Host}api/auth/addStudent`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -61,7 +62,7 @@ const Register = () => {
                 setLoading(false);
                 Swal.fire('Submitted!', 'You have sucessfully registered to the portal.', 'success').then((result) => {
                     if (result.isConfirmed) {
-                      window.location.replace("http://localhost:5173");
+                      window.location.replace(`${Host}`);
                     }
                   });
             }

@@ -13,7 +13,7 @@ const LoginPage = () => {
   const [OtpSent, setOtpSent] = useState(false);
   const [Otp, setOtp] = useState("");
   const navigate = useNavigate();
-  const host = "http://localhost:3000";
+  const Host = 'http://localhost:3000/';
   const {login} = useContext(AuthContext);
   const [loading, setLoading] = useState();
 
@@ -46,7 +46,7 @@ const LoginPage = () => {
   const handleAdminLogin = async (e) => {
     // // Handle admin login logic here
     if (email && password) {
-      const response = await fetch(`${host}/api/auth/admin`, {
+      const response = await fetch(`${Host}api/auth/admin`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -83,7 +83,7 @@ const LoginPage = () => {
   const handleStudentLogin = async () => {
     console.log("Student  tried");
     if (email && password) {
-      const response = await fetch(`${host}/api/auth/student`, {
+      const response = await fetch(`${Host}api/auth/student`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -126,7 +126,7 @@ const LoginPage = () => {
   const handleSendOTP = async () => {
     if (email) {
       startLoader();
-      const response = await fetch(`${host}/api/auth/sendotp`, {
+      const response = await fetch(`${Host}api/auth/sendotp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -150,7 +150,7 @@ const LoginPage = () => {
   };
   const handleVerifyOTP = async () => {
     if (email && Otp) {
-      const response = await fetch(`${host}/api/auth/verifyOTP`, {
+      const response = await fetch(`${Host}api/auth/verifyOTP`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

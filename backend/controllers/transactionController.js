@@ -172,7 +172,7 @@ const createRequest = async (req, res) => {
     
     await request.save();
     console.log("sending email to", student.email)
-    // studentRequestMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, quantity, "borrow");
+    studentRequestMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, quantity, "borrow");
     res.status(201).json(request);
   } catch (error) {
     res
@@ -250,7 +250,7 @@ const acceptRequest = async (req, res) => {
       equipment.quantity -= request.quantity;
 
       await Promise.all([request.save(), equipment.save(), student.save()]);
-      // requestApprovedAndDeclinedMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, request.quantity, "borrow", "Approval");
+      requestApprovedAndDeclinedMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, request.quantity, "borrow", "Approval");
     }
     else{
       request.status = "completed";
@@ -258,7 +258,7 @@ const acceptRequest = async (req, res) => {
       request.adminComments = remark;
 
       await Promise.all([request.save(), equipment.save(), student.save()]);
-      // requestApprovedAndDeclinedMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, request.quantity, "return", "Approval");
+      requestApprovedAndDeclinedMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, request.quantity, "return", "Approval");
     }
     res.status(200).json(request);
   } catch (error) {
@@ -296,12 +296,12 @@ const declineRequest = async (req, res) => {
     if(request.status === 'requested'){
       request.status = "declined";
       await request.save();
-      // requestApprovedAndDeclinedMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, request.quantity, "borrow", "Decline");
+      requestApprovedAndDeclinedMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, request.quantity, "borrow", "Decline");
     }
     else{
       request.status = "accepted";
       await request.save();
-      // requestApprovedAndDeclinedMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, request.quantity, "return", "Decline");
+      requestApprovedAndDeclinedMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, request.quantity, "return", "Decline");
       
     }
 
@@ -470,7 +470,7 @@ const createReturnRequest = async (req, res) => {
     await transaction.save(); // Use await directly on the save method
 
     res.status(200).json(transaction);
-    // studentRequestMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, transaction.quantity, "return");
+    studentRequestMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, transaction.quantity, "return");
   } catch (error) {
     console.error("Error returning equipment:", error);
     res

@@ -9,6 +9,7 @@ function AdminClearedDuesLogs() {
     const [selectedGraduationYear, setSelectedGraduationYear] = useState(new Date().getFullYear());
     const [searchQuery, setSearchQuery] = useState("");
     const token= localStorage.getItem("token");
+    const Host = 'http://localhost:3000/';
 
     useEffect(() => {
         setLoading(true);
@@ -18,7 +19,7 @@ function AdminClearedDuesLogs() {
     const fetchDuesLogs = async () => {
         try {
             const response = await fetch(
-              `http://localhost:3000/api/auth/dueslogs/${selectedGraduationYear}?searchStudent=${searchQuery}`,
+              `${Host}api/auth/dueslogs/${selectedGraduationYear}?searchStudent=${searchQuery}`,
               {
                 method: "GET",
                 headers: {

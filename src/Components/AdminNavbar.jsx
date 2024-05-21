@@ -2,20 +2,12 @@ import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const AdminNavbar = () => {
-  // const location = useLocation();
-  // const isStudent = location.pathname === '/student';
 
-  // const [navBarURL, setNAvBarURL] = useState('/admin/equipment');
-  // if(isStudent){
-  //   setNAvBarURL('/student')
-  // }
-  // else{
-  //   setNAvBarURL('/admin/equipment')
-  // }
+  const Host = 'http://localhost:3000/';
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    window.location.replace("http://localhost:5173");
+    window.location.replace(`${Host}`);
   };
 
   return (

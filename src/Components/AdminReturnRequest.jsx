@@ -23,6 +23,7 @@ const AdminReturnRequest = ({ user }) => {
     "Retuned On",
     "Action",
   ];
+  const Host = 'http://localhost:3000/';
 
   useEffect(() => {
     setLoading(true); fetchRequests();
@@ -31,7 +32,7 @@ const AdminReturnRequest = ({ user }) => {
   const fetchRequests = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/transaction/requests/returning/${user.lab}`,
+        `${Host}api/transaction/requests/returning/${user.lab}`,
         {
           method: "GET",
           headers: {
@@ -93,7 +94,7 @@ const AdminReturnRequest = ({ user }) => {
     try {
       setLoading(true);
       const response = await fetch(
-        `http://localhost:3000/api/transaction/accept/${requestID}`,
+        `${Host}api/transaction/accept/${requestID}`,
         {
           method: "PUT",
           headers: {
@@ -120,7 +121,7 @@ const AdminReturnRequest = ({ user }) => {
     try {
       setLoading(true);
       const response = await fetch(
-        `http://localhost:3000/api/transaction/decline/${requestID}`,
+        `${Host}api/transaction/decline/${requestID}`,
         {
           method: "PUT",
           headers: {

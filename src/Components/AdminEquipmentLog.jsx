@@ -9,6 +9,7 @@ function AdminEquipmentLog({user}) {
   const [year, setYear] = useState(new Date().getFullYear()); // this year is to filter render data , by default it is set to current year
   const [searchQuery, setSearchQuery] = useState("");
   const token = localStorage.getItem("token");
+  const Host = 'http://localhost:3000/';
   
   useEffect(() => {
     setLoading(true); fetchEquipmentLogData();
@@ -16,7 +17,7 @@ function AdminEquipmentLog({user}) {
   
   const fetchEquipmentLogData = async () => {
     try{
-      const response = await fetch(`http://localhost:3000/api/equipment/equipmentLog/${user.lab}/${year}?searchEquipment=${searchQuery}`, {
+      const response = await fetch(`${Host}api/equipment/equipmentLog/${user.lab}/${year}?searchEquipment=${searchQuery}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

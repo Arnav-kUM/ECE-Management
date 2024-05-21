@@ -6,6 +6,7 @@ const StudentDashBoard = ({ user }) => {
   const [returnedTable, setReturnedTable] = useState([]);
   const [loading, setLoading] = useState(true);
   const [returnButtonLoader, setReturnButtonLoader] = useState(false);
+  const Host = 'http://localhost:3000/';
 
   useEffect(() => {
     setLoading(true); fetchRequestData();
@@ -19,7 +20,7 @@ const StudentDashBoard = ({ user }) => {
     const token= localStorage.getItem("token")
     try {
       const response = await fetch(
-        `http://localhost:3000/api/transaction/srequests/${user.id}?status=${statusQueryParam}`,
+        `${Host}api/transaction/srequests/${user.id}?status=${statusQueryParam}`,
         {
           method: "GET",
           headers: {
@@ -58,7 +59,7 @@ const StudentDashBoard = ({ user }) => {
     try {
       setLoading(true);
       const response = await fetch(
-        "http://localhost:3000/api/transaction/return",
+        `${Host}api/transaction/return`,
         {
           method: "POST",
           headers: {
@@ -91,7 +92,7 @@ const StudentDashBoard = ({ user }) => {
     const token = localStorage.getItem("token")
     try {
       const response = await fetch(
-        `http://localhost:3000/api/transaction/srequests/${user.id}?status=${statusQueryParam}`,
+        `${Host}api/transaction/srequests/${user.id}?status=${statusQueryParam}`,
         {
           method: "GET",
           headers: {

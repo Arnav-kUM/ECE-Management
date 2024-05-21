@@ -19,6 +19,7 @@ const AdminBorrowRequest = ({ user }) => {
     "Request Date",
     "Expected return Date",
   ];
+  const Host = 'http://localhost:3000/';
 
   useEffect(() => {
     setLoading(true); fetchRequests();
@@ -29,7 +30,7 @@ const AdminBorrowRequest = ({ user }) => {
     const status = ["accepted","returning"];
     try {
       const response = await fetch(
-        `http://localhost:3000/api/transaction/requests/${status}/${lab}`,
+        `${Host}api/transaction/requests/${status}/${lab}`,
         {
           method: "GET",
           headers: {

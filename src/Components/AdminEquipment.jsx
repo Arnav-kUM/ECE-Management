@@ -18,6 +18,7 @@ const EquipmentTable = ({user}) => {
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const Host = 'http://localhost:3000/';
 
   useEffect(() => {
     setLoading(true); fetchEquipmentData();
@@ -27,7 +28,7 @@ const EquipmentTable = ({user}) => {
     
     try {
 
-      const response = await fetch(`http://localhost:3000/api/equipment/equipments/${user.lab}`,{
+      const response = await fetch(`${Host}api/equipment/equipments/${user.lab}`,{
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -52,7 +53,7 @@ const EquipmentTable = ({user}) => {
     const token = localStorage.getItem("token")
     try {
       const selectedEquipment = equipmentData[rowIndex];
-      const response = await fetch(`http://localhost:3000/api/equipment/equipments/${selectedEquipment._id}`, {
+      const response = await fetch(`${Host}api/equipment/equipments/${selectedEquipment._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -84,7 +85,7 @@ const EquipmentTable = ({user}) => {
     
     const token = localStorage.getItem("token")
     const selectedEquipment = equipmentData[rowIndex];
-    const response = await fetch(`http://localhost:3000/api/equipment/equipments/${selectedEquipment._id}`, {
+    const response = await fetch(`${Host}api/equipment/equipments/${selectedEquipment._id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -182,7 +183,7 @@ const EquipmentTable = ({user}) => {
       { name: name, lab: lab, description: description, link: link, quantity: quantity, type: type }];
 
       // Send a POST request to the backend to add new equipment
-      const response = await fetch('http://localhost:3000/api/equipment/equipments', {
+      const response = await fetch(`${Host}api/equipment/equipments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -422,7 +423,7 @@ const EquipmentTable = ({user}) => {
           return mappedCourse;
         });
         
-        const response = await fetch('http://localhost:3000/api/equipment/equipments', {
+        const response = await fetch(`${Host}api/equipment/equipments`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

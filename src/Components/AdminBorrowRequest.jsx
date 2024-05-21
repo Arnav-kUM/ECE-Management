@@ -17,6 +17,7 @@ const AdminBorrowRequest = ({ user }) => {
     "Aditional Info",
     "Action",
   ];
+  const Host = 'http://localhost:3000/';
 
   useEffect(() => {
     setLoading(true); fetchRequests();
@@ -26,7 +27,7 @@ const AdminBorrowRequest = ({ user }) => {
     const status = "requested";
     try {
       const response = await fetch(
-        `http://localhost:3000/api/transaction/requests/${status}/${user.lab}`,
+        `${Host}api/transaction/requests/${status}/${user.lab}`,
         {
           method: "GET",
           headers: {
@@ -79,7 +80,7 @@ const AdminBorrowRequest = ({ user }) => {
   const acceptRequest = async (requestID) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/transaction/accept/${requestID}`,
+        `${Host}api/transaction/accept/${requestID}`,
         {
           method: "PUT",
           headers: {
@@ -104,7 +105,7 @@ const AdminBorrowRequest = ({ user }) => {
   const declineRequest = async (requestID) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/transaction/decline/${requestID}`,
+        `${Host}api/transaction/decline/${requestID}`,
         {
           method: "PUT",
           headers: {

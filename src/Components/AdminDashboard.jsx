@@ -16,6 +16,7 @@ const AdminDashboard = () => {
   const [modalLoading, setModalLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const token= localStorage.getItem("token");
+  const Host = 'http://localhost:3000/';
 
   useEffect(() => {
     setLoading(true);
@@ -24,7 +25,7 @@ const AdminDashboard = () => {
 
   const fetchStudents = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/auth/students/${selectedGraduationYear}?searchStudent=${searchQuery}`,
+      const response = await fetch(`${Host}api/auth/students/${selectedGraduationYear}?searchStudent=${searchQuery}`,
       {
         method: "GET",
         headers: {
@@ -62,7 +63,7 @@ const AdminDashboard = () => {
     try {
 
       const response = await fetch(
-        `http://localhost:3000/api/transaction/requests/${statuses}/${lab}/${studentID}`,
+        `${Host}api/transaction/requests/${statuses}/${lab}/${studentID}`,
         {
           method: "GET",
           headers: {
@@ -99,7 +100,7 @@ const AdminDashboard = () => {
 
   const handleClearDues = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/auth/disableStudent`, {
+      const response = await fetch(`${Host}api/auth/disableStudent`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

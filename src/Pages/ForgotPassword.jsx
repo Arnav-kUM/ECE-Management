@@ -9,7 +9,7 @@ const ForgotPassword = () => {
   const [loading, setLoading] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
-  const host = "http://localhost:3000";
+  const Host = 'http://localhost:3000/';
 
   const startLoader = () => {
     setLoading(true);
@@ -31,7 +31,7 @@ const ForgotPassword = () => {
     }
     if (email) {
       startLoader();
-      const response = await fetch(`${host}/api/auth/sendotp`, {
+      const response = await fetch(`${Host}api/auth/sendotp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -57,7 +57,7 @@ const ForgotPassword = () => {
   const handleVerifyOTP = async (event) => {
     event.preventDefault();
     if (email && Otp) {
-      const response = await fetch(`${host}/api/auth/verifyOTP`, {
+      const response = await fetch(`${Host}api/auth/verifyOTP`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -80,7 +80,7 @@ const ForgotPassword = () => {
   const handleNewPassword = async (event) => {
     event.preventDefault();
     try{
-        const response = await fetch(`${host}/api/auth/forgotPassword`, {
+        const response = await fetch(`${Host}api/auth/forgotPassword`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

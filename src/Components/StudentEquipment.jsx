@@ -16,6 +16,7 @@ const StudentEquipment = ({ user }) => {
   const [loading, setLoading] = useState(true);
   const [additionInfo, setAdditionalInfo] = useState("NA");
   const token = localStorage.getItem("token");
+  const Host = 'http://localhost:3000/';
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -29,7 +30,7 @@ const StudentEquipment = ({ user }) => {
     
     try {
       const response = await fetch(
-        "http://localhost:3000/api/transaction/requests",
+        `${Host}api/transaction/requests`,
         {
           method: "POST",
           headers: {
@@ -74,7 +75,7 @@ const StudentEquipment = ({ user }) => {
   const fetchEquipmentData = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3000/api/equipment/equipments",
+        `${Host}api/equipment/equipments`,
         {
           method: "GET",
           headers: {

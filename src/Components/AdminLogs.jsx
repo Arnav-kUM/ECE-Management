@@ -19,6 +19,7 @@ function AdminLogs({ user }) {
     "Retuned On",
     "Remark",
   ];
+  const Host = 'http://localhost:3000/';
 
   useEffect(() => {
     setLoading(true); fetchRequests();
@@ -27,7 +28,7 @@ console.log(requests);
   const fetchRequests = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/transaction/requests/completed/${user.lab}`,
+        `${Host}api/transaction/requests/completed/${user.lab}`,
         {
           method: "GET",
           headers: {
