@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
+import {AiOutlineSearch} from "react-icons/ai";
 // Import the EquipmentTable component
 
 const AdminBorrowRequest = ({ user }) => {
@@ -131,19 +132,33 @@ const AdminBorrowRequest = ({ user }) => {
     );
   });
  
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const inputElement = e.currentTarget.previousSibling;
+    const query = inputElement.value;  // Use a local variable
+    setSearchTerm(query);
+  }
 
   return (
     <div className="ml-2">
       <div className="flex mt-1">
         <div className="flex items-center mr-2">
-          <label className="block mb-0 mr-2">Search:</label>
-          <input
-            type="text"
-            placeholder='Search Student...'
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="p-2 border rounded"
-          />
+          <form className="w-[350px]" onSubmit={(e) => e.preventDefault()}>
+            <div className="relative mr-2">
+              <input
+                type="search"
+                placeholder="Search Student..."
+                className="w-full p-4 rounded-full h-10 border border-[#3dafaa] outline-none focus:border-[#3dafaa]"
+
+              />
+              <button className="absolute right-0 top-1/2 -translate-y-1/2 p-3 bg-[#3dafaa] rounded-full search-button text-white"
+                type="button"
+                onClick={handleSearch}
+              >
+                <AiOutlineSearch />
+              </button>
+            </div>
+          </form>
         </div>
         <div className="flex items-center">
           <label className="block mb-0 mr-2">Lab:</label>

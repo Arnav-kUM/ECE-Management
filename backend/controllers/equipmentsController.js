@@ -135,10 +135,10 @@ const getEquipmentLog = async (req, res) => {
   const searchEquipment = req.query.searchEquipment;
   try {
     if (lab !== req.lab) {
-      console.log(lab,req.lab)
       return res.status(401).json({ message: 'Unauthorized - Lab mismatch' });
     }
     let baseQuery = {};
+    baseQuery.currentLab = req.lab;
 
     // Only apply year filter when there is no search query
     if (year !== 'All' && searchEquipment === ''){

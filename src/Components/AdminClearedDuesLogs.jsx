@@ -36,7 +36,6 @@ function AdminClearedDuesLogs() {
             }
             else{
                 setTableData(res.data);
-                console.log(res.data);
             }
         } 
         catch (error) {

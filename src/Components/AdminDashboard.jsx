@@ -232,19 +232,21 @@ const AdminDashboard = () => {
                 studentEquipedData.length !== 0 ?
                 <div className="flex flex-col items-center w-full mb-5">
                   <h2 className= 'text-gray-500 text-5xl mb-10'>Student has following Items equiped</h2>
-                  <table className="w-full max-h-[40vh] overflow-auto">
-                    <thead>
-                      <tr className="bg-gray-400">
-                        <th className="border p-2 text-center">S.No.</th>
-                        <th className="border p-2 text-center">Equipment Name</th>
-                        <th className="border p-2 text-center">Lab</th>
-                        <th className="border p-2 text-center">Quantity</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                    {studentEquipedData.map((data, index) => renderEquipmentDetails(data, index))}
-                    </tbody>
-                  </table>
+                  <div className="w-full max-h-[40vh] overflow-auto">
+                    <table className="w-full max-h-[40vh] overflow-auto">
+                      <thead className="sticky top-0">
+                        <tr className="bg-gray-400">
+                          <th className="border p-2 text-center">S.No.</th>
+                          <th className="border p-2 text-center">Equipment Name</th>
+                          <th className="border p-2 text-center">Lab</th>
+                          <th className="border p-2 text-center">Quantity</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      {studentEquipedData.map((data, index) => renderEquipmentDetails(data, index))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
                 : 
                 <div className="flex flex-col items-center w-full">

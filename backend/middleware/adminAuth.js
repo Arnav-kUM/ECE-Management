@@ -46,7 +46,6 @@ const decodeToken = (token) => {
       // Verify the token and get the decoded payload
       const decodedToken = jwt.verify(token, secretKey); // Replace 'your-secret-key' with your actual secret key
       // Log the decoded token
-      console.log('Decoded Token:', decodedToken);
   
       return decodedToken;
     } catch (error) {

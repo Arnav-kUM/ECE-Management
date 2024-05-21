@@ -34,7 +34,6 @@ const FeedbackForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(formData);
 
     try {
       // Make a POST request to the sheet.best API endpoint

@@ -55,12 +55,10 @@ const LoginPage = () => {
       });
 
       const json = await response.json();
-      console.log(json);
     
       if (json.success) {
         
         localStorage.setItem("token",json.authtoken)
-        console.log(json.authtoken)
         let decodedToken = jwtDecode(json.authtoken); // Decode the JWT token
         let userData = {
           role:decodedToken['role'],
@@ -69,7 +67,6 @@ const LoginPage = () => {
           username:decodedToken['username'],
           email:decodedToken['email']
         };
-        console.log(userData)
         login(userData);
         navigate('/admin');
       } else {
@@ -81,7 +78,6 @@ const LoginPage = () => {
   };
 
   const handleStudentLogin = async () => {
-    console.log("Student  tried");
     if (email && password) {
       const response = await fetch(`${Host}api/auth/student`, {
         method: "POST",
@@ -92,19 +88,19 @@ const LoginPage = () => {
       });
 
       const json = await response.json();
-      console.log(json);
+
     
       if (json.success) {
         
         localStorage.setItem("token",json.authtoken)
-        console.log(json.authtoken)
+
         const decodedToken = jwtDecode(json.authtoken); // Decode the JWT token
         const userData = {
           role:decodedToken['role'],
           id: decodedToken['id'],
           email:decodedToken['email']
         };
-        console.log(userData)
+
         login(userData);
         navigate('/student');
       } else {
@@ -120,7 +116,6 @@ const LoginPage = () => {
 
   const handleStudentForm = () => {
     if (email) {
-      console.log(email);
     }
   };
   const handleSendOTP = async () => {
@@ -174,7 +169,6 @@ const LoginPage = () => {
     e.preventDefault();
 
     if (signInButton) {
-      console.log(selectedOption);
       switch (selectedOption) {
         case "admin":
           handleAdminLogin();

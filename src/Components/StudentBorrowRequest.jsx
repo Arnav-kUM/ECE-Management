@@ -64,7 +64,7 @@ const StudentBorrowRequest = ({ user }) => {
         }
       );
       const data = await response.json();
-      console.log("Response from backend:", data);
+
 
       // Ensure that data.request and data.equipments are arrays
       const requestsArray = Array.isArray(data.requests) ? data.requests : [];

@@ -6,7 +6,6 @@ const RequestTable = (props) => {
 
   // Determine which dataset to use based on props.name
   let equipmentData;
-  console.log(props.name)
   if (props.name === 'borrow') {
     equipmentData = requestedEquipment;
   } else if (props.name === 'return') {

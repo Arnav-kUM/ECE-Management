@@ -171,7 +171,7 @@ const createRequest = async (req, res) => {
     });
     
     await request.save();
-    console.log("sending email to", student.email)
+
     studentRequestMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, quantity, "borrow");
     res.status(201).json(request);
   } catch (error) {
@@ -187,7 +187,7 @@ const deleteRequest = async (req, res) => {
     const userId=req.student
 
     let request = await Transaction.findById(transactionId);
-    console.log(request)
+
    
     if (!request) {
       return res.status(400).json({ error: "Request not found" });
@@ -200,10 +200,10 @@ const deleteRequest = async (req, res) => {
 
     // Check if the transaction is made by the specified user
     if (request.student.toString() !== userId.toString()) {
-      // console.log(request.student.toString())
+
       return res.status(403).json({ error: "Unauthorized to decline this request" });
     }
-    console.log(request.student.toString() !==userId)
+
 
     // // Remove the request from the database
     // await request.remove();
@@ -324,8 +324,10 @@ const getAllRequests = async (req, res) => {
   }
 
   const { status,lab, studentID } = req.params;
+  const year = req.query.year;
+  const studentEmail = req.query.studentEmail;
   
-  const baseQuery = {};
+  let baseQuery = {};
   if (status) {
     const statusArray = status.split(","); // Split the comma-separated string into an array
     baseQuery.status = { $in: statusArray }; // Use $in operator to match any of the provided statuses
@@ -336,7 +338,20 @@ const getAllRequests = async (req, res) => {
   if (lab != "All"){
     baseQuery.lab = lab;
   }
-  console.log(baseQuery)
+
+
+  if (year !== undefined && year !== 'All' && studentEmail === ''){
+    // Parse the year from req.params and create start and end dates
+    const startDate = new Date(`${year}-01-01T00:00:00.000Z`);
+    const endDate = new Date(`${year}-12-31T23:59:59.999Z`);
+    baseQuery.returnedOn = { $gte: startDate, $lte: endDate };
+  }
+
+  if (studentEmail !== undefined && studentEmail !== ''){
+    const idOfSearchedStudent = await Student.find({email: studentEmail})
+    baseQuery.student = idOfSearchedStudent
+  }
+
   try {
     const Rrequests = await Transaction.find(baseQuery);
 
@@ -360,7 +375,7 @@ const getAllRequests = async (req, res) => {
         equipments.push(equipment);
       }
     }
-    console.log(Rrequests);
+
     res.status(200).json({ Rrequests: Rrequests, students: students, equipments: equipments });
   } catch (error) {
     console.error("Error fetching requests:", error);
@@ -398,7 +413,7 @@ const getRequestByStudentIDs = async (req, res) => {
         equipments.push(equipment);
       }
     }
-    console.log(equipments)
+
     res.status(200).json({ requests, equipments });
   } catch (error) {
     console.error("Error fetching requests:", error);
@@ -496,7 +511,6 @@ cron.schedule('16 11 * * *', async () => {
       const student = await Student.findById(transaction.student);
       const equipment = await Equipment.findById(transaction.equipment);
       if (student) {
-        console.log(`Sending return reminder email to ${student.email}`);
         sendReturnReminderEmail(student.email, student.fullName, equipment.name, transaction.quantity, formattedCurrentDate);
       }
     }
@@ -515,7 +529,6 @@ cron.schedule('16 11 * * *', async () => {
       const student = await Student.findById(transaction.student);
       const equipment = await Equipment.findById(transaction.equipment);
       if (student) {
-        console.log(`Sending return reminder email to ${student.email}`);
         sendReturnReminderEmail(student.email, student.fullName, equipment.name, transaction.quantity, beforeDate);
       }
     }
@@ -536,7 +549,6 @@ cron.schedule('16 11 * * *', async () => {
       const student = await Student.findById(transaction.student);
       const equipment = await Equipment.findById(transaction.equipment);
       if (student) {
-        console.log(`Sending return reminder email to ${student.email}`);
         sendReturnReminderEmail(student.email, student.fullName, equipment.name, transaction.quantity, formattedAfterDate);
       }
     }

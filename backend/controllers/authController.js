@@ -18,7 +18,7 @@ const generateAndStoreOTP = (email, otp) => {
   const expirationTime = 3 * 60 * 1000; // OTP valid for 3 minutes
   // Store the OTP along with its expiration time
   otpStorage.set(email, otp);
-  console.log(otpStorage);
+
 
   setTimeout(() => {
     otpStorage.delete(email);
@@ -40,7 +40,7 @@ const sendOtp = async (req, res) => {
     lowerCaseAlphabets: false,
     specialChars: false,
   });
-  console.log(otp);
+
   generateAndStoreOTP(email_id, otp);
 
   // Create an HTML file with the OTP and other data
@@ -77,9 +77,7 @@ const sendOtp = async (req, res) => {
 
 const verifyOtp = async (req, res) => {
   const { email, enteredOTP } = req.body;
-  console.log('Entered OTP:', enteredOTP);
   const storedOTP = otpStorage.get(email);
-  console.log('Stored OTP:', storedOTP);
 
   if (!storedOTP || storedOTP.toString() !== enteredOTP.toString()) {
     return res.status(400).json({ success: false, message: 'Invalid OTP' });
@@ -132,7 +130,6 @@ const addStudent = async (req, res) => {
 
 // Student Login
 const studentLogin = async (req, res) => {
-  console.log("student")
   const { email, password } = req.body;
   const student = await Student.findOne({ email });
 
@@ -164,7 +161,6 @@ const studentLogin = async (req, res) => {
 
 // Admin Login
 const adminLogin = async (req, res) => {
-  console.log("admin login initiated")
   const { email, password } = req.body;
   const admin = await Admin.findOne({ email });
 

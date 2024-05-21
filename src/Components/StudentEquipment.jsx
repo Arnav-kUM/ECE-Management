@@ -54,7 +54,7 @@ const StudentEquipment = ({ user }) => {
       }
 
       // Handle success, you can update the UI or take other actions if needed
-      console.log("Request sent successfully");
+
       Swal.fire(
         "Requested Successfully",
         "Your request has been sent to the admin",

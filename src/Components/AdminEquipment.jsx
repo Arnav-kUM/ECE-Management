@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import Modal from "react-modal";
 import ClipLoader from "react-spinners/ClipLoader";
 import * as XLSX from 'xlsx';
+import {AiOutlineSearch} from "react-icons/ai";
 
 const EquipmentTable = ({user}) => {
   const [equipmentData, setEquipmentData] = useState([]);
@@ -439,6 +440,13 @@ const EquipmentTable = ({user}) => {
     }
   }
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const inputElement = e.currentTarget.previousSibling;
+    const query = inputElement.value;  // Use a local variable
+    setSearchTerm(query);
+  }
+
   return (
     // <div className=''>
       <div className=''>
@@ -446,14 +454,22 @@ const EquipmentTable = ({user}) => {
       <div className="flex justify-between my-2 ml-2">
         <div className='flex'>
           <div className="flex items-center">
-            <label className="block mb-0 mr-2">Search:</label>
-            <input
-              type="text"
-              placeholder='Search Equipment...'
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full p-2 border rounded"
-            />
+            <form className="w-[350px]" onSubmit={(e) => e.preventDefault()}>
+              <div className="relative mr-2">
+                <input
+                  type="search"
+                  placeholder="Search Equipment..."
+                  className="w-full p-4 rounded-full h-10 border border-[#3dafaa] outline-none focus:border-[#3dafaa]"
+
+                />
+                <button className="absolute right-0 top-1/2 -translate-y-1/2 p-3 bg-[#3dafaa] rounded-full search-button text-white"
+                  type="button"
+                  onClick={handleSearch}
+                >
+                  <AiOutlineSearch />
+                </button>
+              </div>
+            </form>
           </div>
           <button
             onClick={openFilterModal}

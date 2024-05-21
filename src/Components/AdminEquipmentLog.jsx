@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ClipLoader from "react-spinners/ClipLoader";
+import * as XLSX from "xlsx";
 import {AiOutlineSearch} from "react-icons/ai";
 
 function AdminEquipmentLog({user}) {
@@ -92,6 +93,35 @@ function AdminEquipmentLog({user}) {
     setSearchQuery(query);
   }
 
+  const handleDownload = () => {
+    let data = []
+    for (const i of equipmentData){
+        const formattedDateOfChange = new Date(i.dateOfChange).toLocaleDateString(
+            "en-GB",
+            {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            }
+        );
+        let row = {}
+        row['Old Name | New Name'] = i['oldName'] + '|' + i['currentName']
+        row['Old Lab | New Lab'] = i['oldLab'] + '|' + i['currentLab']
+        row['Old Quantity | New Quantity'] = i['oldQuantity'] + '|' + i['currentQuantity']
+        row['Old Type | New Type'] = i['oldType'] + '|' + i['currentType']
+        row['Updated On'] = formattedDateOfChange
+        data.push(row)
+    }
+
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, `${user.lab}`);
+    XLSX.writeFile(
+    wb,
+    `Inventory_Update_Log.xlsx`
+    );
+  }
+
   return (
     <div>
       {loading ? (
@@ -106,31 +136,40 @@ function AdminEquipmentLog({user}) {
         </div>
       ) : (
         <>
-          <div className='flex justify-between ml-2 mb-1 items-center mt-1'>
+          <div className='flex justify-between mx-2 mb-1 items-center mt-1'>
             <div className='flex items-center'>
-              <label className="block mb-0 mr-1">Year:</label>
-              {renderFilterOptions(
-                setYear,
-                year
-              )}
-              
-            </div>
-            <form className="w-[350px]" onSubmit={(e) => e.preventDefault()}>
-              <div className="relative mr-2">
-                <input
-                  type="search"
-                  placeholder="Search Equipments by name..."
-                  className="w-full p-4 rounded-full h-10 border border-[#3dafaa] outline-none focus:border-[#3dafaa]"
-
-                />
-                <button className="absolute right-0 top-1/2 -translate-y-1/2 p-3 bg-[#3dafaa] rounded-full search-button text-white"
-                  type="button"
-                  onClick={handleSearch}
-                >
-                  <AiOutlineSearch />
-                </button>
+              <div className='flex items-center'>
+                <label className="block mb-0 mr-1">Year:</label>
+                {renderFilterOptions(
+                  setYear,
+                  year
+                )}
+                
               </div>
-            </form>
+              <form className="w-[350px] ml-4" onSubmit={(e) => e.preventDefault()}>
+                <div className="relative mr-2">
+                  <input
+                    type="search"
+                    placeholder="Search Equipments by name..."
+                    className="w-full p-4 rounded-full h-10 border border-[#3dafaa] outline-none focus:border-[#3dafaa]"
+
+                  />
+                  <button className="absolute right-0 top-1/2 -translate-y-1/2 p-3 bg-[#3dafaa] rounded-full search-button text-white"
+                    type="button"
+                    onClick={handleSearch}
+                  >
+                    <AiOutlineSearch />
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div>
+              <button className="bg-[#3dafaa] text-white px-4 py-2 rounded-full cursor-pointer font-bold"
+                  onClick={handleDownload}
+                  >
+                  Download
+              </button>
+            </div>
           </div>
           <div className='overflow-auto max-w-[80vw] max-h-[80vh] ml-2'>
             <table className='w-full border-collapse border'>

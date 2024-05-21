@@ -37,7 +37,7 @@ const AdminBorrowRequest = ({ user }) => {
         }
       );
       const data = await response.json();
-      console.log(data);
+
 
       const requestsArray = data.Rrequests || [];
       const studentsArray = data.students || [];
