@@ -257,7 +257,7 @@ const StudentDashBoard = ({ user }) => {
     ) : (
       <div className="">
         <div className="flex justify-center">
-          <h3 className="font-bold text-3xl text-[#3dafaa]">Equiped Items</h3>
+          <h3 className="font-bold text-3xl text-[#3dafaa]">Equipped Items</h3>
         </div>
         <div className="overflow-auto max-w-[83vw] max-h-[40vh]">
           <table className="w-full border-collapse border">

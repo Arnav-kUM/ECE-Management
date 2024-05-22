@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 
-const StudentBorrowRequest = ({ user }) => {
+const StudentRequestStatus = ({ user }) => {
   console.log(user)
   const [loading, setLoading] = useState(true);
   const columnNames = [
@@ -198,4 +198,4 @@ const StudentBorrowRequest = ({ user }) => {
   );
 };
 
-export default StudentBorrowRequest;
+export default StudentRequestStatus;

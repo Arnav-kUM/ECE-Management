@@ -4,7 +4,7 @@ import AdminNavbar from '../Components/AdminNavbar.jsx';
 import StudentSideBar from '../Components/StudentSideBar.jsx';
 import StudentEquipment from '../Components/StudentEquipment.jsx';
 import StudentDashBoard from '../Components/StudentDashBoard.jsx';
-import StudentBorrowRequest from '../Components/StudentBorrowRequest.jsx';
+import StudentRequestStatus from '../Components/StudentRequestStatus.jsx';
 import FeedbackForm from '../Components/StudentFeedback.jsx';
 import { jwtDecode } from 'jwt-decode';
 import AuthContext from '../Context/AuthContext.jsx';
@@ -48,7 +48,7 @@ const StudentPage = () => {
             <Routes>
               <Route element={<StudentDashBoard user={user} />} path="/" />
               <Route element={<StudentEquipment  user={user} />} path="/equipments" />
-              <Route element={<StudentBorrowRequest  user={user} />} path="/brequest" />
+              <Route element={<StudentRequestStatus  user={user} />} path="/brequest" />
               <Route element = {<FeedbackForm   user={user} />} path='/feedback'/>
             </Routes>
           </div>
