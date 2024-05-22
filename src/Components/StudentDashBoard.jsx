@@ -6,6 +6,7 @@ const StudentDashBoard = ({ user }) => {
   const [returnedTable, setReturnedTable] = useState([]);
   const [loading, setLoading] = useState(true);
   const [returnButtonLoader, setReturnButtonLoader] = useState(false);
+  const token = localStorage.getItem(user.id);
   const Host = 'http://localhost:3000/';
 
   useEffect(() => {
@@ -17,7 +18,7 @@ const StudentDashBoard = ({ user }) => {
   const fetchRequestData = async () => {
     const statuses = ["accepted", "returning"]; // Use an array for multiple statuses
     const statusQueryParam = statuses.join(",");
-    const token= localStorage.getItem("token")
+
     try {
       const response = await fetch(
         `${Host}api/transaction/srequests/${user.id}?status=${statusQueryParam}`,
@@ -55,7 +56,7 @@ const StudentDashBoard = ({ user }) => {
   };
 
   const sendReturnRequest = async (transactionId) => {
-    const token = localStorage.getItem("token")
+    
     try {
       setLoading(true);
       const response = await fetch(
@@ -89,7 +90,7 @@ const StudentDashBoard = ({ user }) => {
   const returnedData = async () => {
     const statuses = ["completed"]; // Use an array for multiple statuses
     const statusQueryParam = statuses.join(",");
-    const token = localStorage.getItem("token")
+
     try {
       const response = await fetch(
         `${Host}api/transaction/srequests/${user.id}?status=${statusQueryParam}`,

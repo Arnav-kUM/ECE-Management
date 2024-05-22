@@ -5,7 +5,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 const AdminBorrowRequest = ({ user }) => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem(user.id);
   const columnNames = [
     "S.No",
     "Equipment Name",

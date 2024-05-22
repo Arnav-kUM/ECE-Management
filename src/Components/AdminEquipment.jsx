@@ -17,7 +17,7 @@ const EquipmentTable = ({user}) => {
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [loading, setLoading] = useState(true);
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem(user.id);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const Host = 'http://localhost:3000/';
 
@@ -51,7 +51,6 @@ const EquipmentTable = ({user}) => {
 
   const handleSave = async (rowIndex) => {
     
-    const token = localStorage.getItem("token")
     try {
       const selectedEquipment = equipmentData[rowIndex];
       const response = await fetch(`${Host}api/equipment/equipments/${selectedEquipment._id}`, {
@@ -84,7 +83,6 @@ const EquipmentTable = ({user}) => {
 
   const handleDelete = async (rowIndex) => {
     
-    const token = localStorage.getItem("token")
     const selectedEquipment = equipmentData[rowIndex];
     const response = await fetch(`${Host}api/equipment/equipments/${selectedEquipment._id}`, {
         method: 'DELETE',

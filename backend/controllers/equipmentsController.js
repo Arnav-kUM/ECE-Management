@@ -12,7 +12,7 @@ const addEquipments = async (req, res) => {
       const { name, lab, description, link, quantity, type } = equipmentData;
 
       // Check if the request is authenticated
-      if (lab !== req.lab) {
+      if (!req.lab) {
         return res.status(401).json({ message: 'Unauthorized - Lab mismatch' });
       }
 
@@ -25,7 +25,7 @@ const addEquipments = async (req, res) => {
       const newEquipmentLog = new EquipmentLog({
         currentName: name,
         oldName: 'None',
-        currentLab: lab,
+        currentLab: req.lab,
         oldLab: 'None',
         currentQuantity: quantity,
         oldQuantity: 0,
@@ -79,7 +79,7 @@ const updateEquipments = async (req, res) => {
   try {
     const equipmentId = req.params.id;
     const { name, lab, description, link, quantity, type } = req.body;
-    if (lab !== req.lab) {
+    if (!req.lab) {
       return res.status(401).json({ message: 'Unauthorized - Lab mismatch' });
     }
     const equipmentOldDetails = await Equipment.findById(equipmentId);

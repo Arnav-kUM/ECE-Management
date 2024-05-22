@@ -9,7 +9,7 @@ function AdminLogs({ user }) {
   const [loading, setLoading] = useState(true);
   const [year, setYear] = useState(new Date().getFullYear()); // this year is to filter render data , by default it is set to current year
   const [searchedEmail, setSearchedEmail] = useState('')
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem(user.id);
   const columnNames = [
     "S.No",
     "Equipment Name",

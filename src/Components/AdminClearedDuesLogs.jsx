@@ -3,12 +3,12 @@ import ClipLoader from "react-spinners/ClipLoader";
 import * as XLSX from "xlsx";
 import {AiOutlineSearch} from "react-icons/ai";
 
-function AdminClearedDuesLogs() {
+function AdminClearedDuesLogs({user}) {
     const [loading, setLoading] = useState(true);
     const [tabledata, setTableData] = useState([]);
     const [selectedGraduationYear, setSelectedGraduationYear] = useState(new Date().getFullYear());
     const [searchQuery, setSearchQuery] = useState("");
-    const token= localStorage.getItem("token");
+    const token= localStorage.getItem(user.id);
     const Host = 'http://localhost:3000/';
 
     useEffect(() => {

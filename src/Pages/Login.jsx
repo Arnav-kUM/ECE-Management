@@ -58,7 +58,6 @@ const LoginPage = () => {
     
       if (json.success) {
         
-        localStorage.setItem("token",json.authtoken)
         let decodedToken = jwtDecode(json.authtoken); // Decode the JWT token
         let userData = {
           role:decodedToken['role'],
@@ -67,6 +66,7 @@ const LoginPage = () => {
           username:decodedToken['username'],
           email:decodedToken['email']
         };
+        localStorage.setItem(decodedToken['id'],json.authtoken)
         login(userData);
         navigate('/admin');
       } else {
@@ -92,14 +92,14 @@ const LoginPage = () => {
     
       if (json.success) {
         
-        localStorage.setItem("token",json.authtoken)
-
+        
         const decodedToken = jwtDecode(json.authtoken); // Decode the JWT token
         const userData = {
           role:decodedToken['role'],
           id: decodedToken['id'],
           email:decodedToken['email']
         };
+        localStorage.setItem(decodedToken['id'],json.authtoken)
 
         login(userData);
         navigate('/student');
@@ -276,6 +276,10 @@ const LoginPage = () => {
                 value={Otp}
                 onChange={(e) => setOtp(e.target.value)}
               />
+              <div className="flex">
+                <p className="text-gray-500">OTP sended to</p>
+                <p className="text-red-500 ml-1">{email}</p>
+              </div>
             </div>
           )}
 

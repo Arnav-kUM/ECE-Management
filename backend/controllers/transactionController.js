@@ -256,6 +256,7 @@ const acceptRequest = async (req, res) => {
       request.status = "completed";
       equipment.quantity += request.quantity;
       request.adminComments = remark;
+      request.returnedOn = new Date(); // Set returnedOn to the current date
 
       await Promise.all([request.save(), equipment.save(), student.save()]);
       requestApprovedAndDeclinedMail(student.email, student.fullName, student.rollNumber, student.contactNumber, admin.email, equipment.name, request.quantity, "return", "Approval");
@@ -472,7 +473,7 @@ const createReturnRequest = async (req, res) => {
     }
 
     const student = await Student.findById(studentId);
-    if (!student) {
+    if (!student || transaction.student !== studentId) {
       return res.status(400).json({ error: "Student not found" });
     }
 

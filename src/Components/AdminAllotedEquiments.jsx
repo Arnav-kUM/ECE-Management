@@ -8,7 +8,7 @@ const AdminBorrowRequest = ({ user }) => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [lab, setLab] = useState(user.lab);
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem(user.id);
   const columnNames = [
     "S.No",
     "Equipment Name",

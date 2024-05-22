@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-const AdminNavbar = () => {
+const AdminNavbar = ({user}) => {
 
   const Host = 'http://localhost:3000/';
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem(user.id);
     window.location.replace(`${Host}`);
   };
 

@@ -164,6 +164,10 @@ const ForgotPassword = () => {
                   >
                     Verify OTP
                   </button>
+                  <div className="flex">
+                    <p className="text-gray-500">OTP sended to</p>
+                    <p className="text-red-500 ml-1">{email}</p>
+                  </div>
                 </>
               ) : loading ? (
                 <div className="flex justify-center">

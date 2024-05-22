@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 
 const StudentBorrowRequest = ({ user }) => {
+  console.log(user)
   const [loading, setLoading] = useState(true);
   const columnNames = [
     "S.No",

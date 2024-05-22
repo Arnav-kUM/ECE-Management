@@ -9,7 +9,7 @@ const AdminReturnRequest = ({ user }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [remark, setRemark] = useState('NA');
   const [requestID, setRequestID] = useState();
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem(user.id);
 
   const columnNames = [
     "S.No",
@@ -20,7 +20,7 @@ const AdminReturnRequest = ({ user }) => {
     "Additional Info",
     "Requested On",
     "Due Date",
-    "Retuned On",
+    "Retuning On",
     "Action",
   ];
   const Host = 'http://localhost:3000/';

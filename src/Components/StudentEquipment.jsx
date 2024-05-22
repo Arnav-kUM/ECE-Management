@@ -15,7 +15,7 @@ const StudentEquipment = ({ user }) => {
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [additionInfo, setAdditionalInfo] = useState("NA");
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem(user.id);
   const Host = 'http://localhost:3000/';
 
   const openModal = () => {

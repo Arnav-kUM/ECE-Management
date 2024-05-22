@@ -3,7 +3,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import Modal from 'react-modal';
 import {AiOutlineSearch} from "react-icons/ai";
 
-const AdminDashboard = () => {
+const AdminDashboard = ({user}) => {
   const [students, setStudents] = useState([]);
   const [selectedBatch, setSelectedBatch] = useState("");
   const [selectedBranch, setSelectedBranch] = useState("");
@@ -15,7 +15,7 @@ const AdminDashboard = () => {
   const [studentEquipedData,setStudentEquipedData] = useState([]);
   const [modalLoading, setModalLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const token= localStorage.getItem("token");
+  const token= localStorage.getItem(user.id);
   const Host = 'http://localhost:3000/';
 
   useEffect(() => {
@@ -130,7 +130,7 @@ const AdminDashboard = () => {
         <th className="border p-2 text-center">Enrollment Date</th>
         <th className="border p-2 text-center">Contact Number</th>
         <th className="border p-2 text-center">Branch</th>
-        <th className="border p-2 text-center">Batch</th>
+        <th className="border p-2 text-center">Program</th>
         <th className="border p-2 text-center">Graduation Year</th>
         <th className="border p-2 text-center">Action</th>
       </tr>

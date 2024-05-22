@@ -15,7 +15,7 @@ const StudentPage = () => {
 
   useEffect(() => {
     // Get the token from localStorage
-    let token = localStorage.getItem("token");
+    let token = localStorage.getItem(user.id);
 
     // Check if the token exists
     if (token) {
@@ -39,7 +39,7 @@ const StudentPage = () => {
   }, []);
     return (
         <div className='fixed w-full'>
-        <AdminNavbar />
+        <AdminNavbar user={user} />
         <div className="flex">
           <div className="mr-2">
             <StudentSideBar />

@@ -19,7 +19,7 @@ const AdminPage = () => {
 
   useEffect(() => {
     // Get the token from localStorage
-    let token = localStorage.getItem("token");
+    let token = localStorage.getItem(user.id);
 
     // Check if the token exists
     if (token) {
@@ -44,7 +44,7 @@ const AdminPage = () => {
 
   return (
     <div className="fixed w-full">
-      <AdminNavbar />
+      <AdminNavbar user={user} />
       <div className="flex">
         <div className="">
           <SideBar />
@@ -58,7 +58,7 @@ const AdminPage = () => {
           ) : (
             // Render the Routes once the user is fetched
             <Routes>
-              <Route element={<AdminDashboard />} path="/" />
+              <Route element={<AdminDashboard user={user} />} path="/" />
               <Route element={<EquipmentTable user={user} />} path="/equipment" />
               <Route element={<AdminAllotedEquiments user={user} />} path="/alloted" />
               <Route element={<AdminBorrowRequest user={user} />} path="/brequest" />
