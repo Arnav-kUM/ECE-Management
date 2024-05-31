@@ -471,9 +471,9 @@ const createReturnRequest = async (req, res) => {
     if (!transaction) {
       return res.status(400).json({ error: "Transaction not found" });
     }
-
+    
     const student = await Student.findById(studentId);
-    if (!student || transaction.student !== studentId) {
+    if (!student || transaction.student.toString() != studentId.toString()) {
       return res.status(400).json({ error: "Student not found" });
     }
 

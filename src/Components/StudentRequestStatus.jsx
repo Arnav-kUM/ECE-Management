@@ -15,11 +15,12 @@ const StudentRequestStatus = ({ user }) => {
     "Action",
   ];
   const Host = 'http://localhost:3000/';
+  const token = localStorage.getItem(user.id);
 
   const [tableData, setTableData] = useState([]);
 
   const deleteRequest = async (transactionId, userId) => {
-   const token = localStorage.getItem("token")
+   
     try {
       const response = await fetch(
         `${Host}transaction/requests/delete`,
@@ -52,7 +53,6 @@ const StudentRequestStatus = ({ user }) => {
 
   const fetchRequestData = async () => {
     const status = ["requested", "accepted", "declined"];
-    const token = localStorage.getItem("token")
     try {
       const response = await fetch(
         `${Host}api/transaction/srequests/${user.id}?status=${status}`,
