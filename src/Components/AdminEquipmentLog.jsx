@@ -30,7 +30,6 @@ function AdminEquipmentLog({user}) {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      alert(error);
       console.error('Error fetching equipment data: ', error);
     }
   }

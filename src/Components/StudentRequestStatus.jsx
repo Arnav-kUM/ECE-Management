@@ -92,7 +92,7 @@ const StudentRequestStatus = ({ user }) => {
       // }
     } catch (error) {
       setLoading(false);
-      alert(error);
+
       console.error("Error fetching requests:", error);
     }
   };

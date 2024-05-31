@@ -19,6 +19,21 @@ const AdminDashboard = ({user}) => {
   const Host = 'http://localhost:3000/';
 
   useEffect(() => {
+    // On reloading the user at ProtectedRoute.jsx pages gets re-initilized and become null as default value
+    // due to which ProtectedRoute.jsx page was unable to locate token because token for each user is mapped by using its user id and in case of relaod user is null at ProtectedRoute.jax page
+    // therefore this useEffect will store the user id of user who have relaoded the page, using this ProtectedRoute.jsx page will able to locate token
+    const handleBeforeUnload = () => {
+      localStorage.setItem("Reloaded_User",user.id);
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
+  useEffect(() => {
     setLoading(true);
     fetchStudents();
   }, [selectedGraduationYear,searchQuery]);
@@ -44,7 +59,6 @@ const AdminDashboard = ({user}) => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      alert(error);
       console.error("Error fetching students:", error);
     }
   };

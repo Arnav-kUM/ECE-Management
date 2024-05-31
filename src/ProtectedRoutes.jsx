@@ -7,7 +7,13 @@ const ProtectedRoute = ({ element, allowedRoles }) => {
   const [loading, setLoading] = useState(true);
 
 useEffect(() => {
-  const token = localStorage.getItem(user.id);
+  let token = null;
+  if (user === null){
+    token = localStorage.getItem(localStorage.getItem("Reloaded_User"));
+  }
+  else{
+    token = localStorage.getItem(user.id);
+  }
 
   if (token) {
     try {

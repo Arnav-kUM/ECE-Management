@@ -59,7 +59,6 @@ const AdminReturnRequest = ({ user }) => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      alert(error);
       console.error("Error fetching requests:", error);
     }
   };

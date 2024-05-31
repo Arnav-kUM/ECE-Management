@@ -68,7 +68,7 @@ const studentRequestMail = asyncHandler(
           <p><strong>Email:</strong> ${studentEmail}</p>
           <p><strong>Name:</strong> ${studentName}</p>
           <p><strong>Roll No.</strong> ${studentRollNo}</p>
-          <p><strong>Conatact</strong> ${studentContact}</p>
+          <p><strong>Contact</strong> ${studentContact}</p>
 
           <h2>${mailText} Requested for:</h2>
           <p><strong>Equipment:</strong> ${equipmentName}</p>
@@ -115,7 +115,7 @@ const requestApprovedAndDeclinedMail = asyncHandler(
           <p><strong>Email:</strong> ${studentEmail}</p>
           <p><strong>Name:</strong> ${studentName}</p>
           <p><strong>Roll No.</strong> ${studentRollNo}</p>
-          <p><strong>Conatact</strong> ${studentContact}</p>
+          <p><strong>Contact</strong> ${studentContact}</p>
 
           <h2>${mailText} Requested for:</h2>
           <p><strong>Equipment:</strong> ${equipmentName}</p>
@@ -504,7 +504,8 @@ cron.schedule('16 11 * * *', async () => {
     // Find transactions with returnDate matching the current date
     const currentDayTransactions = await Transaction.find({
       returnDate: { $gte: formattedCurrentDate, $lt: new Date(formattedCurrentDate + 'T23:59:59.999Z') },
-      returnedOn: null
+      returnedOn: null,
+      status: 'accepted'
     });
 
     // Send return reminder emails to the students for the current day

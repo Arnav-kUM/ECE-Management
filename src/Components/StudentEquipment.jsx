@@ -18,6 +18,7 @@ const StudentEquipment = ({ user }) => {
   const token = localStorage.getItem(user.id);
   const Host = 'http://localhost:3000/';
 
+
   const openModal = () => {
     setModalIsOpen(true);
   };
